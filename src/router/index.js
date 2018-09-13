@@ -6,6 +6,8 @@ import SvgApp from '@/components/SvgApp'
 import Container from '@/components/Container'
 import Code from '@/components/Code'
 
+import ChatBot from '@/components/bots/ChatBot'
+
 Vue.use(Router)
 
 export default new Router({
@@ -35,6 +37,11 @@ export default new Router({
       path: '/code',
       name: 'Code',
       component: Code
+    },
+    {
+      path: '/chat',
+      name: 'Chat',
+      component: ChatBot
     }
   ]
 })
