@@ -4,6 +4,7 @@
       <b-button-toolbar key-nav>
         <b-button-group class="mx-1">
           <b-button @click="addRow">행추가</b-button>
+          <b-button>test</b-button>
         </b-button-group>
         <b-button-group class="mx-1">
           <b-button @click="getList">조회</b-button>
