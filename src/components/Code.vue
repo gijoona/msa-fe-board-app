@@ -70,6 +70,7 @@ import BootstrapVue from 'bootstrap-vue'
 Vue.use(BootstrapVue)
 
 export default {
+  테스트를 위해 에러가 발생하도록 함.
   name: 'Code',
   data: function () {
     return {
