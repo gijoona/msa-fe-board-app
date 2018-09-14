@@ -8,6 +8,8 @@ import Code from '@/components/Code'
 
 import ChatBot from '@/components/bots/ChatBot'
 
+import Login from '@/components/Login'
+
 Vue.use(Router)
 
 export default new Router({
@@ -17,6 +19,11 @@ export default new Router({
       path: '/',
       name: 'HelloWorld',
       component: HelloWorld
+    },
+    {
+      path: '/login',
+      name: 'Login',
+      component: Login
     },
     {
       path: '/board',
