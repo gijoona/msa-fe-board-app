@@ -20,7 +20,7 @@ export default {
   name: 'Login',
   data: function () {
     return {
-      msg: 'login!!!',
+      msg: 'login!!',
       form: {
         id: '',
         passwd: ''
