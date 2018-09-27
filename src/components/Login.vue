@@ -5,7 +5,11 @@
         <b-form-input type="text" v-model="form.id" placeholder="Enter User Id"></b-form-input>
         <b-form-input type="password" v-model="form.passwd" placeholder="Enter User Password"></b-form-input>
       </b-form>
-      <b-button href="http://localhost:9070/auth/kakao">카카오</b-button>
+      <b-button-group>
+        <b-button href="http://localhost:9070/auth/kakao">카카오</b-button>
+        <b-button href="http://localhost:9070/auth/facebook">페이스북</b-button>
+        <b-button href="http://localhost:9070/auth/naver">네이버</b-button>
+      </b-button-group>
     </b-card>
   </b-container>
 </template>
