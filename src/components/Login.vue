@@ -1,16 +1,37 @@
 <template>
   <b-container>
-    <b-card>
-      <b-form>
-        <b-form-input type="text" v-model="form.id" placeholder="Enter User Id"></b-form-input>
-        <b-form-input type="password" v-model="form.passwd" placeholder="Enter User Password"></b-form-input>
-      </b-form>
-      <b-button-group>
-        <b-button href="http://35.200.103.250:9070/auth/kakao">카카오</b-button>
-        <b-button href="http://35.200.103.250:9070/auth/facebook">페이스북</b-button>
-        <b-button href="http://35.200.103.250:9070/auth/naver">네이버</b-button>
-      </b-button-group>
-    </b-card>
+    <b-jumbotron>
+      <b-container>
+        <b-row>
+          <b-col cols="9">
+            <b-form-input type="text" v-model="form.username" placeholder="Enter Username"></b-form-input>
+            <b-form-input type="password" v-model="form.password" placeholder="Enter Password"></b-form-input>
+          </b-col>
+          <b-col cols="3">
+            <b-button :block="true" class="p-4" @click="login">Login</b-button>
+          </b-col>
+        </b-row>
+      </b-container>
+
+      <hr class="my-4" />
+
+      <b-container>
+        <b-row>
+          <b-col>
+            <b-button-toolbar>
+              <b-button-group class="mx-1">
+                <b-btn href="http://35.200.103.250:9070/auth/join">회원가입</b-btn>
+              </b-button-group>
+              <b-button-group class="mx-1">
+                <b-btn href="http://35.200.103.250:9070/auth/kakao">카카오</b-btn>
+                <b-btn href="http://35.200.103.250:9070/auth/facebook">페이스북</b-btn>
+                <b-btn href="http://35.200.103.250:9070/auth/naver">네이버</b-btn>
+              </b-button-group>
+            </b-button-toolbar>
+          </b-col>
+        </b-row>
+      </b-container>
+    </b-jumbotron>
   </b-container>
 </template>
 
@@ -27,12 +48,20 @@ export default {
     return {
       msg: 'login!!',
       form: {
-        id: '',
-        passwd: ''
+        username: '',
+        password: ''
       }
     }
   },
   methods: {
+    login: function () {
+      this.$http.post('http://35.200.103.250:9070/auth/local', {
+        username: this.form.username,
+        password: this.form.password
+      }).then((res) => {
+        console.log('passport LocalStrategy')
+      })
+    }
   }
 }
 </script>
