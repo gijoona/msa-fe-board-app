@@ -20,12 +20,12 @@
           <b-col>
             <b-button-toolbar>
               <b-button-group class="mx-1">
-                <b-btn href="http://35.200.103.250:9070/auth/join">회원가입</b-btn>
+                <b-btn :href="url + '/auth/join'">회원가입</b-btn>
               </b-button-group>
               <b-button-group class="mx-1">
-                <b-btn href="http://35.200.103.250:9070/auth/kakao">카카오</b-btn>
-                <b-btn href="http://35.200.103.250:9070/auth/facebook">페이스북</b-btn>
-                <b-btn href="http://35.200.103.250:9070/auth/naver">네이버</b-btn>
+                <b-btn :href="url + '/auth/kakao'">카카오</b-btn>
+                <b-btn :href="url + '/auth/facebook'">페이스북</b-btn>
+                <b-btn :href="url + '/auth/naver'">네이버</b-btn>
               </b-button-group>
             </b-button-toolbar>
           </b-col>
@@ -47,6 +47,7 @@ export default {
   data: function () {
     return {
       msg: 'login!!',
+      url: 'http://localhost:9070',
       form: {
         username: '',
         password: ''
@@ -55,7 +56,7 @@ export default {
   },
   methods: {
     login: function () {
-      this.$http.post('http://35.200.103.250:9070/auth/local', {
+      this.$http.post(this.url + '/auth/local', {
         username: this.form.username,
         password: this.form.password
       }).then((res) => {

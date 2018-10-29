@@ -5,6 +5,7 @@ import Board from '@/components/Board'
 import SvgApp from '@/components/SvgApp'
 import Container from '@/components/Container'
 import Code from '@/components/Code'
+import Main from '@/components/Main'
 
 import ChatBot from '@/components/bots/ChatBot'
 
@@ -19,6 +20,11 @@ export default new Router({
       path: '/',
       name: 'HelloWorld',
       component: HelloWorld
+    },
+    {
+      path: '/main',
+      name: 'Main',
+      component: Main
     },
     {
       path: '/login',
