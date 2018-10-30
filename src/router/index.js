@@ -1,15 +1,20 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+
+// microservice architecture(MSA) example
 import HelloWorld from '@/components/HelloWorld'
 import Board from '@/components/Board'
 import SvgApp from '@/components/SvgApp'
 import Container from '@/components/Container'
 import Code from '@/components/Code'
-import Main from '@/components/Main'
 
+// chatbot example
 import ChatBot from '@/components/bots/ChatBot'
 
-import Login from '@/components/Login'
+// A Quester sources
+import Login from '@/components/quester/Login'
+import Main from '@/components/quester/Main'
+import Profile from '@/components/quester/Profile'
 
 Vue.use(Router)
 
@@ -30,6 +35,11 @@ export default new Router({
       path: '/login',
       name: 'Login',
       component: Login
+    },
+    {
+      path: '/profile',
+      name: 'Profile',
+      component: Profile
     },
     {
       path: '/board',
