@@ -15,6 +15,7 @@
           <b-card class="mb-3">
             <div slot="header">
               수령가능 퀘스트
+              <b-link href="/quest" class="btn btn-secondary">리스트</b-link>
             </div>
             <b-card>
               퀘스트항목
@@ -33,6 +34,7 @@
           <b-card class="mb-3">
             <div slot="header">
               진행 퀘스트
+              <b-btn>메뉴</b-btn>
             </div>
             <b-card>
               퀘스트항목
@@ -49,6 +51,7 @@
           <b-card class="mb-3">
             <div slot="header">
               완료 퀘스트
+              <b-btn>리스트</b-btn>
             </div>
             <b-card>
               퀘스트항목

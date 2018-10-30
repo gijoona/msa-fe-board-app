@@ -17,6 +17,7 @@
                   title="User Information Title">
             <p class="card-text">
               <b-form>
+                <!-- 필수정보 -->
                 <b-form-group id="idGroup"
                               label="ID:"
                               label-for="id"
@@ -63,10 +64,81 @@
                 </b-form-group>
 
                 <hr />
+                <!-- 선택정보 -->
+                <b-form-group id="birthGroup"
+                              label="Birthday:"
+                              label-for="birthday"
+                              description="user birthday input">
+                  <b-form-input id="birthday"
+                                type="date"
+                                v-model="userinfo.birthday"
+                                placeholder="Enter Birthday input">
+                  </b-form-input>
+                </b-form-group>
+                <b-form-group id="heightGroup"
+                              label="Height:"
+                              label-for="height"
+                              description="user height input">
+                  <b-form-input id="height"
+                                type="number"
+                                v-model="userinfo.height"
+                                placeholder="Enter Height input">
+                  </b-form-input>
+                </b-form-group>
+                <b-form-group id="weightGroup"
+                              label="Weight:"
+                              label-for="weight"
+                              description="user weight input">
+                  <b-form-input id="weight"
+                                type="number"
+                                v-model="userinfo.weight"
+                                placeholder="Enter Weight input">
+                  </b-form-input>
+                </b-form-group>
+                <b-form-group id="genderGroup"
+                              label="Gender:"
+                              label-for="gender"
+                              description="user gender input">
+                  <b-form-input id="gender"
+                                type="text"
+                                v-model="userinfo.gender"
+                                placeholder="Enter Gender input">
+                  </b-form-input>
+                </b-form-group>
+                <b-form-group id="jobTypeGroup"
+                              label="Job Type:"
+                              label-for="jobType"
+                              description="user job type input">
+                  <b-form-input id="jobType"
+                                type="text"
+                                v-model="userinfo.jobType"
+                                placeholder="Enter Job Type input">
+                  </b-form-input>
+                </b-form-group>
+                <b-form-group id="jobGroup"
+                              label="Job:"
+                              label-for="job"
+                              description="user job input">
+                  <b-form-input id="job"
+                                type="text"
+                                v-model="userinfo.job"
+                                placeholder="Enter Job input">
+                  </b-form-input>
+                </b-form-group>
+                <b-form-group id="emailGroup"
+                              label="Email:"
+                              label-for="email"
+                              description="user email input">
+                  <b-form-input id="email"
+                                type="email"
+                                v-model="userinfo.email"
+                                placeholder="Enter Email input">
+                  </b-form-input>
+                </b-form-group>
               </b-form>
             </p>
             <div slot="footer">
-              footer
+              <b-btn size="lg">저장</b-btn>
             </div>
           </b-card>
         </b-col>
@@ -90,7 +162,14 @@ export default {
         power_exp: 100,
         stamina_exp: 120,
         knowledge_exp: 150,
-        relation_exp: 50
+        relation_exp: 50,
+        birthday: null,
+        height: 0,
+        weight: 0,
+        gender: null,
+        jobType: null,
+        job: '',
+        email: ''
       }
     }
   },

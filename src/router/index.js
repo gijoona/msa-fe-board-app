@@ -15,6 +15,7 @@ import ChatBot from '@/components/bots/ChatBot'
 import Login from '@/components/quester/Login'
 import Main from '@/components/quester/Main'
 import Profile from '@/components/quester/Profile'
+import QuestInfo from '@/components/quester/QuestInfo'
 
 Vue.use(Router)
 
@@ -40,6 +41,11 @@ export default new Router({
       path: '/profile',
       name: 'Profile',
       component: Profile
+    },
+    {
+      path: '/quest',
+      name: 'QuestInfo',
+      component: QuestInfo
     },
     {
       path: '/board',
