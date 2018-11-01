@@ -51,7 +51,7 @@
           <b-card class="mb-3">
             <div slot="header">
               완료 퀘스트
-              <b-btn>리스트</b-btn>
+              <b-link href="/quest" class="btn btn-secondary">리스트</b-link>
             </div>
             <b-card>
               퀘스트항목
@@ -89,8 +89,18 @@ export default {
       }
     }
   },
+  methods: {
+    getUser: function () {
+      this.$http.get('http://localhost:8000/user').then((res) => {
+        console.log(res)
+      })
+    }
+  },
   components: {
     navComponent: Nav
+  },
+  created: function () {
+    this.getUser()
   }
 }
 </script>
