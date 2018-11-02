@@ -87,7 +87,7 @@ export default {
   },
   methods: {
     getUser: function () {
-      this.$http.get('http://localhost:8000/user').then((res) => {
+      this.$http.get('http://localhost:8000/quest').then((res) => {
         console.log(res)
       })
     }
@@ -96,6 +96,7 @@ export default {
     navComponent: Nav
   },
   created: function () {
+    this.$http.defaults.headers.common['Authorization'] = localStorage.getItem('jwtToken')
     this.getUser()
   }
 }
