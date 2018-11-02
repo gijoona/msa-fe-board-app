@@ -70,11 +70,7 @@
 </template>
 
 <script>
-import Vue from 'vue'
-import BootstrapVue from 'bootstrap-vue'
 import Nav from '@/components/inc/Nav'
-
-Vue.use(BootstrapVue)
 
 export default {
   name: 'Main',

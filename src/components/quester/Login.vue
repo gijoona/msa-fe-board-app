@@ -45,11 +45,6 @@
 </template>
 
 <script>
-import Vue from 'vue'
-import BootstrapVue from 'bootstrap-vue'
-
-Vue.use(BootstrapVue)
-
 // TODO :: 로그인기능 및 타사인증 기능 개발
 export default {
   name: 'Login',

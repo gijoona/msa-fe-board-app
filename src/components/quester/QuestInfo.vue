@@ -39,8 +39,6 @@
   </div>
 </template>
 <script>
-import Vue from 'vue'
-import BootstrapVue from 'bootstrap-vue'
 import Nav from '@/components/inc/Nav'
 import VueHighcharts from 'vue2-highcharts'
 
@@ -51,11 +49,6 @@ import Highcharts from 'highcharts'
 Treemap(Highcharts)
 // Load Exporting module
 // Exporting(Highcharts)
-
-Vue.use(BootstrapVue)
-
-// Load treemap module
-// treemap(VueHighcharts)
 
 // vue2-highcharts 테스트용 데이터
 const asyncData = {
