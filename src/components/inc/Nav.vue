@@ -32,7 +32,7 @@
             <em>User</em>
           </template>
           <b-dropdown-item href="/profile">Profile</b-dropdown-item>
-          <b-dropdown-item href="/login">Signout</b-dropdown-item>
+          <b-dropdown-item href="#" @click.stop="logout()">Signout</b-dropdown-item>
         </b-nav-item-dropdown>
       </b-navbar-nav>
 
@@ -45,6 +45,22 @@ export default {
   name: 'Nav',
   data: function () {
     return {}
+  },
+  methods: {
+    logout: function () {
+      let jwtToken = localStorage.getItem('jwtToken')
+      this.$http.defaults.headers.common['Authorization'] = jwtToken
+      this.$http.post('http://localhost:9070/auth/logout')
+        .then((res) => {
+          localStorage.removeItem('jwtToken')
+          this.$router.push({
+            name: 'Login'
+          })
+        })
+        .catch((e) => {
+          console.error(e)
+        })
+    }
   }
 }
 </script>

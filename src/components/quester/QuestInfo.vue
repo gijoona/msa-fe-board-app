@@ -5,11 +5,11 @@
       <b-row>
         <b-col md="6">
           <b-img rounded="circle" blank width="200" height="200" blank-color="#ccc" alt="img" class="m-1" />
-          {{ userinfo.username }}
-          <b-badge pill variant="danger">{{ userinfo.power_exp }}</b-badge>
-          <b-badge pill variant="success">{{ userinfo.stamina_exp }}</b-badge>
-          <b-badge pill variant="primary">{{ userinfo.knowledge_exp }}</b-badge>
-          <b-badge pill variant="info">{{ userinfo.relation_exp }}</b-badge>
+          {{ userInfo.username }}
+          <b-badge pill variant="danger">{{ userInfo.power_exp }}</b-badge>
+          <b-badge pill variant="success">{{ userInfo.stamina_exp }}</b-badge>
+          <b-badge pill variant="primary">{{ userInfo.knowledge_exp }}</b-badge>
+          <b-badge pill variant="info">{{ userInfo.relation_exp }}</b-badge>
         </b-col>
         <b-col md="6">
           <b-card class="mb-3"
@@ -96,13 +96,14 @@ export default {
     return {
       msg: 'quest information view',
       Highcharts: Highcharts,
-      userinfo: {
-        username: 'user123',
-        power_exp: 100,
-        stamina_exp: 120,
-        knowledge_exp: 150,
-        relation_exp: 50
+      userInfo: {
+        // username: 'user123',
+        // power_exp: 100,
+        // stamina_exp: 120,
+        // knowledge_exp: 150,
+        // relation_exp: 50
       },
+      quests: [],
       // vue2-highcharts 테스트용 설정
       options: {
         title: {
@@ -113,21 +114,47 @@ export default {
     }
   },
   methods: {
-    load: function () {
+    loadChart: function () {
       let lineCharts = this.$refs.lineCharts
       lineCharts.delegateMethod('showLoading', 'Loading...')
       setTimeout(() => {
         lineCharts.addSeries(asyncData)
         lineCharts.hideLoading()
       }, 2000)
+    },
+    loadQuestList: function () {
+      this.$http.get('http://localhost:8000/quest')
+        .then((res) => {
+          console.log(res)
+          this.quests = res.results
+        })
+        .catch((e) => {
+          console.error(e)
+        })
+    },
+    loadUserInfo: function () {
+      this.$http.get('http://localhost:8000/user')
+        .then((res) => {
+          console.log(res)
+          this.userInfo = res.results
+        })
+        .catch((e) => {
+          console.error(e)
+        })
     }
   },
   components: {
     navComponent: Nav,
     vueHighcharts: VueHighcharts
   },
+  created: function () {
+    let jwtToken = localStorage.getItem('jwtToken')
+    this.$http.defaults.headers.common['Authorization'] = jwtToken || ''
+  },
   mounted: function () {
-    this.load()
+    this.loadChart()
+    this.loadQuestList()
+    this.loadUserInfo()
   }
 }
 </script>

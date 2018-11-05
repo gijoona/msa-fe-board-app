@@ -96,7 +96,8 @@ export default {
     navComponent: Nav
   },
   created: function () {
-    this.$http.defaults.headers.common['Authorization'] = localStorage.getItem('jwtToken')
+    let jwtToken = localStorage.getItem('jwtToken')
+    this.$http.defaults.headers.common['Authorization'] = jwtToken || ''
     this.getUser()
   }
 }

@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 // microservice architecture(MSA) example
-import HelloWorld from '@/components/HelloWorld'
+// import HelloWorld from '@/components/HelloWorld'
 import Board from '@/components/Board'
 import SvgApp from '@/components/SvgApp'
 import Container from '@/components/Container'
@@ -24,8 +24,7 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'HelloWorld',
-      component: HelloWorld
+      redirect: '/main'
     },
     {
       path: '/main',

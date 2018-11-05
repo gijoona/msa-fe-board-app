@@ -73,6 +73,15 @@
                       :state="checkComfirmState">
           <b-form-input type="password" id="pwdComfirm" v-model.trim="join.comfirm" placeholder="Comfirm"></b-form-input>
         </b-form-group>
+        <b-form-group id="nickNameGroup" horizontal
+                      label="Nickname : "
+                      label-for="nickName"
+                      label-class="text-md-left"
+                      :invalid-feedback="invalidNickName"
+                      :valid-feedback="validNickName"
+                      :state="checkNickNameState">
+          <b-form-input type="text" id="nickName" v-model.trim="join.displayName" placeholder="Nick Name"></b-form-input>
+        </b-form-group>
       </b-form>
       <div slot="modal-footer">
         <b-btn variant="secondary">취소</b-btn>
@@ -157,6 +166,19 @@ export default {
     },
     validComfirm: function () {
       return 'OK!!!'
+    },
+    checkNickNameState: function () {
+      return !!this.join.displayName
+    },
+    invalidNickName: function () {
+      if (this.join.displayName > 0) {
+        return ''
+      } else {
+        return 'Plase Enter Nickname'
+      }
+    },
+    validNickName: function () {
+      return ''
     }
   }
 }
