@@ -5,7 +5,7 @@
       <b-row>
         <b-col md="6">
           <b-img rounded="circle" blank width="200" height="200" blank-color="#ccc" alt="img" class="m-1" />
-          {{ userInfo.username }}
+          {{ userInfo.displayName }}
           <b-badge pill variant="danger">{{ userInfo.power_exp }}</b-badge>
           <b-badge pill variant="success">{{ userInfo.stamina_exp }}</b-badge>
           <b-badge pill variant="primary">{{ userInfo.knowledge_exp }}</b-badge>
@@ -23,19 +23,44 @@
       </b-row>
       <b-row>
         <b-col md="12">
-          <b-card class="mb-3"
-                  header="퀘스트목록"
-                  header-tag="header">
-            <b-card>퀘스트내용</b-card>
-            <b-card>퀘스트내용</b-card>
-            <b-card>퀘스트내용</b-card>
-            <b-card>퀘스트내용</b-card>
-            <b-card>퀘스트내용</b-card>
-            <b-card>퀘스트내용</b-card>
+          <b-card class="mb-3">
+            <div slot="header">
+              퀘스트목록
+              <b-btn size="sm" @click="toggleModal(null, true)">추가</b-btn>
+            </div>
+            <b-card v-for="quest in quests" :key="quest._id">
+              {{ quest.title }}
+              {{ quest.contents }}
+              <b-btn size="sm" variant="primary" @click="toggleModal(quest, false)">수정</b-btn>
+              <b-btn size="sm" variant="danger" @click="deleteQuestInfo(quest)">삭제</b-btn>
+            </b-card>
           </b-card>
         </b-col>
       </b-row>
     </b-container>
+    <b-modal id="questInfoModal"
+            ref="questInfoModal" size="md"
+            title="퀘스트정보" header-bg-variant="info" header-text-variant="light">
+      <b-form>
+        <b-form-group id="questTitleGroup"
+                      label="Title"
+                      label-for="questTitle">
+          <b-form-input id="questTitle" v-model="questInfo.title"></b-form-input>
+        </b-form-group>
+        <b-form-group id="questContentsGroup"
+                      label="Contents"
+                      label-for="questContents">
+          <b-form-textarea id="questContents"
+                          v-model="questInfo.contents"
+                          :rows="3" :max-rows="6">
+          </b-form-textarea>
+        </b-form-group>
+      </b-form>
+      <div slot="modal-footer">
+        <b-btn @click.stop="toggleModal()">취소</b-btn>
+        <b-btn variant="primary" @click.stop="saveQuestInfo()">저장</b-btn>
+      </div>
+    </b-modal>
   </div>
 </template>
 <script>
@@ -104,13 +129,15 @@ export default {
         // relation_exp: 50
       },
       quests: [],
+      questInfo: { isNew: false },
       // vue2-highcharts 테스트용 설정
       options: {
         title: {
           text: 'Monthly Average Temperature'
         },
         series: []
-      }
+      },
+      isShowModal: false
     }
   },
   methods: {
@@ -126,7 +153,7 @@ export default {
       this.$http.get('http://localhost:8000/quest')
         .then((res) => {
           console.log(res)
-          this.quests = res.results
+          this.quests = res.data.results
         })
         .catch((e) => {
           console.error(e)
@@ -136,11 +163,64 @@ export default {
       this.$http.get('http://localhost:8000/user')
         .then((res) => {
           console.log(res)
-          this.userInfo = res.results
+          this.userInfo = res.data.results
         })
         .catch((e) => {
           console.error(e)
         })
+    },
+    saveQuestInfo: function () {
+      if (this.questInfo.isNew) {
+        // New Quest Data
+        this.$http.post('http://localhost:8000/quest', this.questInfo, {headers: { 'Content-Type': 'application/json' }})
+          .then((res) => {
+            if (res.data.errorcode === 0) {
+              this.loadQuestList()
+            } else {
+              console.log(res.data.errormessage)
+            }
+          })
+          .catch((e) => {
+            console.error(e)
+          })
+      } else {
+        // Modify Quest Data
+        this.$http.put('http://localhost:8000/quest', this.questInfo, {headers: { 'Content-Type': 'application/json' }})
+          .then((res) => {
+            if (res.data.errorcode === 0) {
+              this.loadQuestList()
+            } else {
+              console.error(res.data.errormessage)
+            }
+          })
+          .catch((e) => {
+            console.error(e)
+          })
+      }
+    },
+    deleteQuestInfo: function (quest) {
+      this.$http.delete('http://localhost:8000/quest?id=' + quest['_id'])
+        .then((res) => {
+          if (res.data.errorcode === 0) {
+            this.loadQuestList();
+          } else {
+            console.error(res.data.errormessage)
+          }
+        })
+        .catch((e) => {
+          console.error(e)
+        })
+    },
+    toggleModal: function (quest, isNew) {
+      let questData = quest || { 'isNew': isNew || false }
+      this.questInfo = Object.assign({}, this.questInfo, questData)
+      // modal show & hide
+      this.isShowModal = !this.isShowModal
+      if (this.isShowModal) {
+        this.$refs.questInfoModal.show()
+      } else {
+        this.$refs.questInfoModal.hide()
+      }
     }
   },
   components: {
