@@ -202,7 +202,7 @@ export default {
       this.$http.delete('http://localhost:8000/quest?id=' + quest['_id'])
         .then((res) => {
           if (res.data.errorcode === 0) {
-            this.loadQuestList();
+            this.loadQuestList()
           } else {
             console.error(res.data.errormessage)
           }
