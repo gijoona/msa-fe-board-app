@@ -26,12 +26,12 @@
           <b-card class="mb-3">
             <div slot="header">
               퀘스트목록
-              <b-btn size="sm" @click="toggleModal(null, true)">추가</b-btn>
+              <b-btn size="sm" @click="showModal(null, true)">추가</b-btn>
             </div>
             <b-card v-for="quest in quests" :key="quest._id">
               {{ quest.title }}
               {{ quest.contents }}
-              <b-btn size="sm" variant="primary" @click="toggleModal(quest, false)">수정</b-btn>
+              <b-btn size="sm" variant="primary" @click="showModal(quest, false)">수정</b-btn>
               <b-btn size="sm" variant="danger" @click="deleteQuestInfo(quest)">삭제</b-btn>
             </b-card>
           </b-card>
@@ -40,30 +40,58 @@
     </b-container>
     <b-modal id="questInfoModal"
             ref="questInfoModal" size="md"
-            title="퀘스트정보" header-bg-variant="info" header-text-variant="light">
+            title="퀘스트정보" header-bg-variant="info" header-text-variant="light"
+            @hidden="hideModal">
       <b-form>
         <b-form-group id="questTitleGroup"
-                      label="Title"
+                      label="제목"
                       label-for="questTitle">
           <b-form-input id="questTitle" v-model="questInfo.title"></b-form-input>
         </b-form-group>
         <b-form-group id="questContentsGroup"
-                      label="Contents"
+                      label="퀘스트내용"
                       label-for="questContents">
           <b-form-textarea id="questContents"
                           v-model="questInfo.contents"
                           :rows="3" :max-rows="6">
           </b-form-textarea>
         </b-form-group>
+        <b-form-group id="powerExpGroup" horizontal
+                      label="힘"
+                      label-for="powerExp">
+          <b-form-input id="powerExp" v-model="questInfo.powerExp" type="number"></b-form-input>
+        </b-form-group>
+        <b-form-group id="staminaExpGroup" horizontal
+                      label="체력"
+                      label-for="staminaExp">
+          <b-form-input id="staminaExp" v-model="questInfo.staminaExp" type="number"></b-form-input>
+        </b-form-group>
+        <b-form-group id="knowledgeExpGroup" horizontal
+                      label="지능"
+                      label-for="knowledgeExp">
+          <b-form-input id="knowledgeExp" v-model="questInfo.knowledgeExp" type="number"></b-form-input>
+        </b-form-group>
+        <b-form-group id="relationExpGroup" horizontal
+                      label="인맥"
+                      label-for="relationExp">
+          <b-form-input id="relationExp" v-model="questInfo.relationExp" type="number"></b-form-input>
+        </b-form-group>
+        <b-form-group id="tagsGroup"
+                      label="해시태그"
+                      label-for="tags">
+          <b-form-input id="tags" v-model="tags"></b-form-input>
+          <hash-tag v-for="tag in hashTags" :tag="tag" :key="tag"></hash-tag>
+        </b-form-group>
       </b-form>
       <div slot="modal-footer">
-        <b-btn @click.stop="toggleModal()">취소</b-btn>
+        <b-btn @click.stop="hideModal()">취소</b-btn>
         <b-btn variant="primary" @click.stop="saveQuestInfo()">저장</b-btn>
       </div>
     </b-modal>
   </div>
 </template>
 <script>
+import Vue from 'vue'
 import Nav from '@/components/inc/Nav'
 import VueHighcharts from 'vue2-highcharts'
 
@@ -115,6 +143,11 @@ const asyncData = {
   }]
 }
 
+Vue.component('hash-tag', {
+  props: ['tag'],
+  template: '<b-badge pill class="mx-1">{{ tag }}</b-badge>'
+})
+
 export default {
   name: 'QuestInfo',
   data: function () {
@@ -129,15 +162,15 @@ export default {
         // relation_exp: 50
       },
       quests: [],
-      questInfo: { isNew: false },
+      questInfo: { tags: [], isNew: false },
+      tags: '',
       // vue2-highcharts 테스트용 설정
       options: {
         title: {
           text: 'Monthly Average Temperature'
         },
         series: []
-      },
-      isShowModal: false
+      }
     }
   },
   methods: {
@@ -152,7 +185,6 @@ export default {
     loadQuestList: function () {
       this.$http.get('http://localhost:8000/quest')
         .then((res) => {
-          console.log(res)
           this.quests = res.data.results
         })
         .catch((e) => {
@@ -162,7 +194,6 @@ export default {
     loadUserInfo: function () {
       this.$http.get('http://localhost:8000/user')
         .then((res) => {
-          console.log(res)
           this.userInfo = res.data.results
         })
         .catch((e) => {
@@ -170,12 +201,14 @@ export default {
         })
     },
     saveQuestInfo: function () {
+      this.questInfo.tags = this.hashTags
       if (this.questInfo.isNew) {
         // New Quest Data
         this.$http.post('http://localhost:8000/quest', this.questInfo, {headers: { 'Content-Type': 'application/json' }})
           .then((res) => {
             if (res.data.errorcode === 0) {
               this.loadQuestList()
+              this.hideModal()
             } else {
               console.log(res.data.errormessage)
             }
@@ -189,6 +222,7 @@ export default {
           .then((res) => {
             if (res.data.errorcode === 0) {
               this.loadQuestList()
+              this.hideModal()
             } else {
               console.error(res.data.errormessage)
             }
@@ -211,16 +245,23 @@ export default {
           console.error(e)
         })
     },
-    toggleModal: function (quest, isNew) {
+    showModal: function (quest, isNew) {
       let questData = quest || { 'isNew': isNew || false }
       this.questInfo = Object.assign({}, this.questInfo, questData)
-      // modal show & hide
-      this.isShowModal = !this.isShowModal
-      if (this.isShowModal) {
-        this.$refs.questInfoModal.show()
-      } else {
-        this.$refs.questInfoModal.hide()
-      }
+      this.tags = (questData.tags || []).join(' ').toString()
+      // modal show
+      this.$refs.questInfoModal.show()
+    },
+    hideModal: function () {
+      this.questInfo = { 'isNew': false }
+      // modal hide
+      this.$refs.questInfoModal.hide()
+    }
+  },
+  computed: {
+    hashTags: function () {
+      let hashTags = (this.tags || '').split(' ')
+      return hashTags
     }
   },
   components: {
