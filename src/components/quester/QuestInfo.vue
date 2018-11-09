@@ -13,7 +13,7 @@
         </b-col>
         <b-col md="6">
           <b-card class="mb-3"
-                  header="퀘스트유형"
+                  header="등록 퀘스트유형"
                   header-tag="header">
             <p>
               <vue-highcharts :highcharts="Highcharts" :options="options" ref="lineCharts"></vue-highcharts>
@@ -121,26 +121,7 @@ const asyncData = {
       }
     }
   }],
-  data: [{
-    id: 'A',
-    name: '힘',
-    color: '#EC2500',
-    value: 10
-  }, {
-    id: 'B',
-    name: '체력',
-    color: '#ECE100',
-    value: 15
-  }, {
-    id: 'O',
-    name: '지능',
-    color: '#EC9800',
-    value: 8
-  }, {
-    name: '인맥',
-    color: '#9EDE00',
-    value: 2
-  }]
+  data: []
 }
 
 Vue.component('hash-tag', {
@@ -154,30 +135,46 @@ export default {
     return {
       msg: 'quest information view',
       Highcharts: Highcharts,
-      userInfo: {
-        // username: 'user123',
-        // power_exp: 100,
-        // stamina_exp: 120,
-        // knowledge_exp: 150,
-        // relation_exp: 50
-      },
+      userInfo: {},
       quests: [],
       questInfo: { tags: [], isNew: false },
       tags: '',
       // vue2-highcharts 테스트용 설정
       options: {
+        chart: {
+          height: 150
+        },
         title: {
-          text: 'Monthly Average Temperature'
+          text: ''
         },
         series: []
       }
     }
   },
   methods: {
-    loadChart: function () {
+    loadChart: function (data) {
       let lineCharts = this.$refs.lineCharts
       lineCharts.delegateMethod('showLoading', 'Loading...')
+      let codeDefine = {
+        powerExp: {name: '힘', color: '#DC3545'},
+        staminaExp: {name: '체력', color: '#28A745'},
+        knowledgeExp: {name: '지능', color: '#007BFF'},
+        relationExp: {name: '인맥', color: '#17A2B8'}
+      }
+      let chartSeriesDatas = []
+
+      for (let key in data) {
+        let seriesData = {}
+        seriesData.id = key
+        seriesData.value = data[key]
+        seriesData.name = codeDefine[key].name
+        seriesData.color = codeDefine[key].color
+        chartSeriesDatas.push(seriesData)
+      }
+      asyncData.data = chartSeriesDatas
+
       setTimeout(() => {
+        lineCharts.removeSeries()
         lineCharts.addSeries(asyncData)
         lineCharts.hideLoading()
       }, 2000)
@@ -186,6 +183,7 @@ export default {
       this.$http.get('http://localhost:8000/quest')
         .then((res) => {
           this.quests = res.data.results
+          this.loadChart(res.data.chartSeries)
         })
         .catch((e) => {
           console.error(e)
@@ -273,7 +271,7 @@ export default {
     this.$http.defaults.headers.common['Authorization'] = jwtToken || ''
   },
   mounted: function () {
-    this.loadChart()
+    // this.loadChart()
     this.loadQuestList()
     this.loadUserInfo()
   }

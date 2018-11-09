@@ -5,11 +5,11 @@
       <b-row>
         <b-col md="6">
           <b-img rounded="circle" blank width="200" height="200" blank-color="#ccc" alt="img" class="m-1" />
-          {{ userinfo.username }}
-          <b-badge pill variant="danger">{{ userinfo.power_exp }}</b-badge>
-          <b-badge pill variant="success">{{ userinfo.stamina_exp }}</b-badge>
-          <b-badge pill variant="primary">{{ userinfo.knowledge_exp }}</b-badge>
-          <b-badge pill variant="info">{{ userinfo.relation_exp }}</b-badge>
+          {{ userInfo.displayName }}
+          <b-badge pill variant="danger">{{ userInfo.powerExp }}</b-badge>
+          <b-badge pill variant="success">{{ userInfo.staminaExp }}</b-badge>
+          <b-badge pill variant="primary">{{ userInfo.knowledgeExp }}</b-badge>
+          <b-badge pill variant="info">{{ userInfo.relationExp }}</b-badge>
         </b-col>
         <b-col md="6">
           <b-card class="mb-3">
@@ -17,14 +17,9 @@
               수령가능 퀘스트
               <b-link href="/quest" class="btn btn-secondary">리스트</b-link>
             </div>
-            <b-card>
-              퀘스트항목
-            </b-card>
-            <b-card>
-              퀘스트항목
-            </b-card>
-            <b-card>
-              퀘스트항목
+            <b-card v-for="quest in quests.regist" :key="quest['_id']">
+              {{ quest.title }}
+              <b-btn size="sm" variant="primary" @click="receiptQuest(quest)">수령</b-btn>
             </b-card>
           </b-card>
         </b-col>
@@ -36,14 +31,8 @@
               진행 퀘스트
               <b-btn>메뉴</b-btn>
             </div>
-            <b-card>
-              퀘스트항목
-            </b-card>
-            <b-card>
-              퀘스트항목
-            </b-card>
-            <b-card>
-              퀘스트항목
+            <b-card v-for="quest in quests.process" :key="quest['_id']">
+              {{ quest.title }}
             </b-card>
           </b-card>
         </b-col>
@@ -53,14 +42,8 @@
               완료 퀘스트
               <b-link href="/quest" class="btn btn-secondary">리스트</b-link>
             </div>
-            <b-card>
-              퀘스트항목
-            </b-card>
-            <b-card>
-              퀘스트항목
-            </b-card>
-            <b-card>
-              퀘스트항목
+            <b-card v-for="quest in quests.complete" :key="quest['_id']">
+              {{ quest.title }}
             </b-card>
           </b-card>
         </b-col>
@@ -76,20 +59,47 @@ export default {
   name: 'Main',
   data: function () {
     return {
-      userinfo: {
-        username: 'user123',
-        power_exp: 100,
-        stamina_exp: 120,
-        knowledge_exp: 150,
-        relation_exp: 50
+      userInfo: {},
+      quests: {
+        regist: [],
+        process: [],
+        complete: []
       }
     }
   },
   methods: {
     getUser: function () {
-      this.$http.get('http://localhost:8000/quest').then((res) => {
-        console.log(res)
-      })
+      this.$http.get('http://localhost:8000/user')
+        .then((res) => {
+          this.userInfo = res.data.results
+          this.quests.complete = res.data.quests.complate
+          this.quests.process = res.data.quests.process
+        })
+        .catch((e) => {
+          console.log(e)
+        })
+    },
+    getQuestList: function () {
+      this.$http.get('http://localhost:8000/quest')
+        .then((res) => {
+          console.log(res.data.results)
+          this.quests.regist = res.data.results
+        })
+        .catch((e) => {
+          console.error(e)
+        })
+    },
+    receiptQuest: function (quest) {
+      let userInfo = this.userInfo
+      quest.state = 'process'
+      userInfo.quests.push(quest)
+      this.$http.put('http://localhost:8000/user', userInfo, {headers: {'Content-Type': 'application/json'}})
+        .then((res) => {
+          console.log(res)
+        })
+        .catch((e) => {
+          console.error(e)
+        })
     }
   },
   components: {
@@ -99,6 +109,7 @@ export default {
     let jwtToken = localStorage.getItem('jwtToken')
     this.$http.defaults.headers.common['Authorization'] = jwtToken || ''
     this.getUser()
+    this.getQuestList()
   }
 }
 </script>

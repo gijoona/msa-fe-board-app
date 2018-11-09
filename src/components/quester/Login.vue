@@ -13,8 +13,8 @@
               <b-container>
                 <b-row>
                   <b-col cols="9">
-                    <b-form-input type="text" v-model.trim="login.username" placeholder="Enter Username"></b-form-input>
-                    <b-form-input type="password" v-model.trim="login.password" placeholder="Enter Password"></b-form-input>
+                    <b-form-input type="text" ref="username" v-model.trim="login.username" placeholder="Enter Username"></b-form-input>
+                    <b-form-input type="password" ref="password" v-model.trim="login.password" placeholder="Enter Password"></b-form-input>
                   </b-col>
                   <b-col cols="3">
                     <b-button :block="true" class="p-4" type="submit" variant="primary">Login</b-button>
@@ -180,6 +180,9 @@ export default {
     validNickName: function () {
       return ''
     }
+  },
+  mounted: function () {
+    this.$refs.username.focus()
   }
 }
 </script>

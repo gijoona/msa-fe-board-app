@@ -12,9 +12,8 @@
           <b-badge pill variant="info">{{ userInfo.relation_exp }}</b-badge>
         </b-col>
         <b-col md="6">
-          <b-card header="User Information"
-                  header-tag="header"
-                  title="User Information Title">
+          <b-card header="사용자 정보"
+                  header-tag="header">
             <p class="card-text">
               <b-form>
                 <!-- 필수정보 -->
