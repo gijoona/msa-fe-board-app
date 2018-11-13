@@ -96,7 +96,7 @@ import Nav from '@/components/inc/Nav'
 import VueHighcharts from 'vue2-highcharts'
 
 // import Exporting from 'highcharts/modules/Exporting.js'
-import Treemap from 'highcharts/modules/Treemap.js'
+import Treemap from 'highcharts/modules/treemap.js'
 import Highcharts from 'highcharts'
 // Load Treemap module
 Treemap(Highcharts)
