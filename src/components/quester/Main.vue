@@ -6,10 +6,10 @@
         <b-col md="6">
           <b-img rounded="circle" blank width="200" height="200" blank-color="#ccc" alt="img" class="m-1" />
           {{ userInfo.displayName }}
-          <b-badge pill variant="danger">{{ userInfo.powerExp }}</b-badge>
-          <b-badge pill variant="success">{{ userInfo.staminaExp }}</b-badge>
-          <b-badge pill variant="primary">{{ userInfo.knowledgeExp }}</b-badge>
-          <b-badge pill variant="info">{{ userInfo.relationExp }}</b-badge>
+          <b-badge pill variant="danger">Lv.{{ userInfo.powerLevel }}</b-badge>
+          <b-badge pill variant="success">Lv.{{ userInfo.staminaLevel }}</b-badge>
+          <b-badge pill variant="primary">Lv.{{ userInfo.knowledgeLevel }}</b-badge>
+          <b-badge pill variant="info">Lv.{{ userInfo.relationLevel }}</b-badge>
         </b-col>
         <b-col md="6">
           <b-card class="mb-3">
@@ -148,6 +148,8 @@ export default {
     receiptQuest: function (quest) {
       let userInfo = this.userInfo
       quest.state = 'process'
+      quest.questId = quest['_id']
+      quest['_id'] = this.uuidgen() // 수령 시 uuid를 이용하여 _id 생성
       userInfo.quests.push(quest)
       this.$http.put('http://localhost:8000/user', userInfo, {headers: {'Content-Type': 'application/json'}})
         .then((res) => {
@@ -191,6 +193,12 @@ export default {
     },
     hideQuestModal: function () {
       this.$refs.questInfoModal.hide()
+    },
+    uuidgen: function () {
+      function s4 () {
+        return ((1 + Math.random()) * 0x10000 | 0).toString(16).substring(1)
+      }
+      return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4()
     }
   },
   components: {
