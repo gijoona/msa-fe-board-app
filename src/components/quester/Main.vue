@@ -163,10 +163,10 @@ export default {
     completeQuest: function () {
       // 사용자 스테이터스정보 처리
       let userInfo = this.userInfo
-      userInfo.powerExp += this.questInfo.powerExp || 0
-      userInfo.staminaExp += this.questInfo.staminaExp || 0
-      userInfo.knowledgeExp += this.questInfo.knowledgeExp || 0
-      userInfo.relationExp += this.questInfo.relationExp || 0
+      userInfo.powerExp += this.questInfo.powerExp > userInfo.powerMaxExp ? userInfo.powerMaxExp : this.questInfo.powerExp
+      userInfo.staminaExp += this.questInfo.staminaExp > userInfo.staminaMaxExp ? userInfo.staminaMaxExp : this.questInfo.staminaExp
+      userInfo.knowledgeExp += this.questInfo.knowledgeExp > userInfo.knowledgeMaxExp ? userInfo.knowledgeMaxExp : this.questInfo.knowledgeExp
+      userInfo.relationExp += this.questInfo.relationExp > userInfo.relationMaxExp ? userInfo.relationMaxExp : this.questInfo.relationExp
       userInfo.point += this.questInfo.point || 0
 
       // questInfo에 있는 데이터를 처리. 퀘스트정보 처리
