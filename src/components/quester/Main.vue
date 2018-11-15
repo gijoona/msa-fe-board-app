@@ -138,7 +138,6 @@ export default {
     getQuestList: function () {
       this.$http.get('http://localhost:8000/quest')
         .then((res) => {
-          console.log(res.data.results)
           this.quests.regist = res.data.results
         })
         .catch((e) => {
@@ -146,12 +145,17 @@ export default {
         })
     },
     receiptQuest: function (quest) {
-      let userInfo = this.userInfo
-      quest.state = 'process'
+      // quest.state = 'process'
       quest.questId = quest['_id']
-      quest['_id'] = this.uuidgen() // 수령 시 uuid를 이용하여 _id 생성
-      userInfo.quests.push(quest)
-      this.$http.put('http://localhost:8000/user', userInfo, {headers: {'Content-Type': 'application/json'}})
+      quest.userId = this.userInfo['_id']
+      quest.inputDt = Date.now()
+      delete quest['_id']
+
+      let data = {
+        userInfo: this.userInfo,
+        questInfo: quest
+      }
+      this.$http.put('http://localhost:8000/user', data, {headers: {'Content-Type': 'application/json'}})
         .then((res) => {
           this.getUser()
           this.getQuestList()
@@ -162,22 +166,25 @@ export default {
     },
     completeQuest: function () {
       // 사용자 스테이터스정보 처리
-      let userInfo = this.userInfo
-      userInfo.powerExp += this.questInfo.powerExp > userInfo.powerMaxExp ? userInfo.powerMaxExp : this.questInfo.powerExp
-      userInfo.staminaExp += this.questInfo.staminaExp > userInfo.staminaMaxExp ? userInfo.staminaMaxExp : this.questInfo.staminaExp
-      userInfo.knowledgeExp += this.questInfo.knowledgeExp > userInfo.knowledgeMaxExp ? userInfo.knowledgeMaxExp : this.questInfo.knowledgeExp
-      userInfo.relationExp += this.questInfo.relationExp > userInfo.relationMaxExp ? userInfo.relationMaxExp : this.questInfo.relationExp
-      userInfo.point += this.questInfo.point || 0
+      let data = {
+        userInfo: this.userInfo,
+        questInfo: this.questInfo
+      }
+      data.userInfo.powerExp += this.calcExp(data.questInfo.powerExp, data.userInfo.powerMaxExp)
+      data.userInfo.staminaExp += this.calcExp(data.questInfo.staminaExp, data.userInfo.staminaMaxExp)
+      data.userInfo.knowledgeExp += this.calcExp(data.questInfo.knowledgeExp, data.userInfo.knowledgeMaxExp)
+      data.userInfo.relationExp += this.calcExp(data.questInfo.relationExp, data.userInfo.relationMaxExp)
+      data.userInfo.point += data.questInfo.point || 0
 
       // questInfo에 있는 데이터를 처리. 퀘스트정보 처리
-      this.questInfo.state = 'complete'
-      for (let idx in userInfo.quests) {
-        if (userInfo.quests[idx]['_id'] === this.questInfo['_id']) {
-          userInfo.quests[idx] = this.questInfo
-          break
-        }
-      }
-      this.$http.put('http://localhost:8000/user', userInfo, {headers: {'Content-Type': 'application/json'}})
+      data.questInfo.state = 'complete'
+      // for (let idx in userInfo.quests) {
+      //   if (userInfo.quests[idx]['_id'] === this.questInfo['_id']) {
+      //     userInfo.quests[idx] = this.questInfo
+      //     break
+      //   }
+      // }
+      this.$http.put('http://localhost:8000/user', data, {headers: {'Content-Type': 'application/json'}})
         .then((res) => {
           this.getUser()
           this.getQuestList()
@@ -199,6 +206,10 @@ export default {
         return ((1 + Math.random()) * 0x10000 | 0).toString(16).substring(1)
       }
       return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4()
+    },
+    calcExp: function (currExp, maxExp) {
+      let exp = currExp > maxExp ? maxExp : currExp
+      return exp
     }
   },
   components: {
