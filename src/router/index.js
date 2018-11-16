@@ -17,6 +17,11 @@ import Main from '@/components/quester/Main'
 import Profile from '@/components/quester/Profile'
 import QuestInfo from '@/components/quester/QuestInfo'
 
+// issue sources
+import Issue from '@/components/issue/Issue'
+import IssueList from '@/components/issue/IssueList'
+import IssueEdit from '@/components/issue/IssueEdit'
+
 Vue.use(Router)
 
 export default new Router({
@@ -45,6 +50,22 @@ export default new Router({
       path: '/quest',
       name: 'QuestInfo',
       component: QuestInfo
+    },
+    {
+      path: '/issue',
+      component: Issue,
+      children: [
+        {
+          path: '',
+          name: 'IssueList',
+          component: IssueList
+        },
+        {
+          path: 'Edit(/:id)?',
+          name: 'IssueEdit',
+          component: IssueEdit
+        }
+      ]
     },
     {
       path: '/board',

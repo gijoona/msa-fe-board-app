@@ -12,6 +12,12 @@ Vue.use(BootstrapVue)
 axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*'
 Vue.prototype.$http = axios
 
+Vue.directive('focus', {
+  inserted: function (el) {
+    el.focus()
+  }
+})
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
