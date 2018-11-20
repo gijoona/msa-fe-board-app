@@ -125,7 +125,7 @@ export default {
   },
   methods: {
     getUser: function () {
-      this.$http.get('http://localhost:8000/user')
+      this.$http.get('/api/user')
         .then((res) => {
           this.userInfo = res.data.results
           this.quests.complete = res.data.quests.complete
@@ -136,7 +136,7 @@ export default {
         })
     },
     getQuestList: function () {
-      this.$http.get('http://localhost:8000/quest')
+      this.$http.get('/api/quest')
         .then((res) => {
           this.quests.regist = res.data.results
         })
@@ -155,7 +155,7 @@ export default {
         userInfo: this.userInfo,
         questInfo: quest
       }
-      this.$http.put('http://localhost:8000/user', data, {headers: {'Content-Type': 'application/json'}})
+      this.$http.put('/api/user', data, {headers: {'Content-Type': 'application/json'}})
         .then((res) => {
           this.getUser()
           this.getQuestList()
@@ -184,7 +184,7 @@ export default {
       //     break
       //   }
       // }
-      this.$http.put('http://localhost:8000/user', data, {headers: {'Content-Type': 'application/json'}})
+      this.$http.put('/api/user', data, {headers: {'Content-Type': 'application/json'}})
         .then((res) => {
           this.getUser()
           this.getQuestList()

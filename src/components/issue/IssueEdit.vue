@@ -25,6 +25,7 @@
       <b-btn type="reset">Reset</b-btn>
       <b-btn variant="danger" @click.stop="onDelete">Delete</b-btn>
     </b-form>
+    <b-modal ref="alert">저장되었습니다.</b-modal>
   </div>
 </template>
 <script>
@@ -38,7 +39,7 @@ export default {
   },
   methods: {
     load: function () {
-      this.$http.get('http://localhost:8000/issue/edit?id=' + this.$route.params.id)
+      this.$http.get('/api/issue/edit?id=' + this.$route.params.id)
         .then((res) => {
           this.issueData = res.data.results
         })
@@ -49,15 +50,16 @@ export default {
     onSubmit: function (evt) {
       evt.preventDefault()
       if (this.$route.params.id) {
-        this.$http.put('http://localhost:8000/issue', this.issueData, { headers: {'Content-Type': 'application/json'} })
+        this.$http.put('/api/issue', this.issueData, { headers: {'Content-Type': 'application/json'} })
           .then((res) => {
+            this.$refs.alert.show()
             this.issueData = res.data.results
           })
           .catch((e) => {
             console.error(e)
           })
       } else {
-        this.$http.post('http://localhost:8000/issue', this.issueData, { headers: {'Content-Type': 'application/json'} })
+        this.$http.post('/api/issue', this.issueData, { headers: {'Content-Type': 'application/json'} })
           .then((res) => {
             if (res.data.errorcode === 1) {
               console.error(res.data.errormessage)
@@ -71,7 +73,7 @@ export default {
       }
     },
     onDelete: function () {
-      this.$http.delete('http://localhost:8000/issue?id=' + this.$route.params.id)
+      this.$http.delete('/api/issue?id=' + this.$route.params.id)
         .then((res) => {
           if (res.data.errorcode === 1) {
             console.error(res.data.errormessage)

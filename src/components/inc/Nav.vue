@@ -50,7 +50,7 @@ export default {
     logout: function () {
       let jwtToken = localStorage.getItem('jwtToken')
       this.$http.defaults.headers.common['Authorization'] = jwtToken
-      this.$http.post('http://localhost:9070/auth/logout')
+      this.$http.post('/auth/logout')
         .then((res) => {
           localStorage.removeItem('jwtToken')
           this.$router.push({

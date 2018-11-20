@@ -34,9 +34,9 @@
                       <b-btn v-b-modal.registModal>회원가입</b-btn>
                     </b-button-group>
                     <!-- <b-button-group class="mx-1">
-                    <b-btn :href="url + '/auth/kakao'">카카오</b-btn>
-                    <b-btn :href="url + '/auth/facebook'">페이스북</b-btn>
-                    <b-btn :href="url + '/auth/naver'">네이버</b-btn>
+                    <b-btn :href="url + '/kakao'">카카오</b-btn>
+                    <b-btn :href="url + '/facebook'">페이스북</b-btn>
+                    <b-btn :href="url + '/naver'">네이버</b-btn>
                   </b-button-group> -->
                   </b-button-toolbar>
                 </b-col>
@@ -97,7 +97,7 @@ export default {
   name: 'Login',
   data: function () {
     return {
-      url: 'http://localhost:9070',
+      url: '/auth',
       login: { provider: 'local' },
       join: { provider: 'local' },
       errors: []
@@ -106,7 +106,7 @@ export default {
   methods: {
     onSubmit: function (evt) {
       evt.preventDefault()
-      this.$http.post(`${this.url}/auth/login`, this.login)
+      this.$http.post('/auth/login', this.login)
         .then(res => {
           localStorage.setItem('jwtToken', res.data.token)
           this.$router.push({
@@ -119,7 +119,7 @@ export default {
         })
     },
     onRegist: function () {
-      this.$http.post(`${this.url}/auth/register`, this.join)
+      this.$http.post('/auth/register', this.join)
         .then(res => {
           localStorage.setItem('jwtToken', res.data.token)
           this.$router.push({

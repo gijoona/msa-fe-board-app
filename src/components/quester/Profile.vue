@@ -182,7 +182,7 @@ export default {
   },
   methods: {
     loadUserInfo: function () {
-      this.$http.get('http://localhost:8000/user')
+      this.$http.get('/api/user')
         .then((res) => {
           this.userInfo = res.data.results
         })
@@ -191,7 +191,7 @@ export default {
         })
     },
     saveUserInfo: function () {
-      this.$http.put('http://localhost:8000/user', this.userInfo, {headers: { 'Content-Type': 'application/json' }})
+      this.$http.put('/api/user', this.userInfo, {headers: { 'Content-Type': 'application/json' }})
         .then((res) => {
           if (res.data.errorcode === 0) {
             this.loadUserInfo()

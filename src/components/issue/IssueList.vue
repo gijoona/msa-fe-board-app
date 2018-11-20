@@ -27,7 +27,7 @@ export default {
   },
   methods: {
     loadIssueList: function () {
-      this.$http.get('http://localhost:8000/issue/list')
+      this.$http.get('/api/issue/list')
         .then((res) => {
           this.issues = res.data.results
         })

@@ -180,7 +180,7 @@ export default {
       }, 2000)
     },
     loadQuestList: function () {
-      this.$http.get('http://localhost:8000/quest')
+      this.$http.get('/api/quest')
         .then((res) => {
           this.quests = res.data.results
           this.loadChart(res.data.chartSeries)
@@ -190,7 +190,7 @@ export default {
         })
     },
     loadUserInfo: function () {
-      this.$http.get('http://localhost:8000/user')
+      this.$http.get('/api/user')
         .then((res) => {
           this.userInfo = res.data.results
         })
@@ -202,7 +202,7 @@ export default {
       this.questInfo.tags = this.hashTags
       if (this.questInfo.isNew) {
         // New Quest Data
-        this.$http.post('http://localhost:8000/quest', this.questInfo, {headers: { 'Content-Type': 'application/json' }})
+        this.$http.post('/api/quest', this.questInfo, {headers: { 'Content-Type': 'application/json' }})
           .then((res) => {
             if (res.data.errorcode === 0) {
               this.loadQuestList()
@@ -216,7 +216,7 @@ export default {
           })
       } else {
         // Modify Quest Data
-        this.$http.put('http://localhost:8000/quest', this.questInfo, {headers: { 'Content-Type': 'application/json' }})
+        this.$http.put('/api/quest', this.questInfo, {headers: { 'Content-Type': 'application/json' }})
           .then((res) => {
             if (res.data.errorcode === 0) {
               this.loadQuestList()
@@ -231,7 +231,7 @@ export default {
       }
     },
     deleteQuestInfo: function (quest) {
-      this.$http.delete('http://localhost:8000/quest?id=' + quest['_id'])
+      this.$http.delete('/api/quest?id=' + quest['_id'])
         .then((res) => {
           if (res.data.errorcode === 0) {
             this.loadQuestList()
