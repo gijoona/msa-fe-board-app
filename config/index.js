@@ -12,14 +12,14 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/api': {
-        target: process.env.NODE_ENV === 'development' ? 'http://localhost:8000' : 'http://35.200.103.250:8000',
+        target: 'http://localhost:8000',
         changeOrigin: true,
         pathRewrite: {
           '^/api': ''
         }
       },
       '/auth': {
-        target: process.env.NODE_ENV === 'development' ? 'http://localhost:9070' : 'http://35.200.103.250:9070',
+        target: 'http://localhost:9070',
         changeOrigin: true
       }
     },
