@@ -21,6 +21,7 @@ import QuestInfo from '@/components/quester/QuestInfo'
 import Issue from '@/components/issue/Issue'
 import IssueList from '@/components/issue/IssueList'
 import IssueEdit from '@/components/issue/IssueEdit'
+import IssueView from '@/components/issue/IssueView'
 
 Vue.use(Router)
 
@@ -64,6 +65,11 @@ export default new Router({
           path: 'Edit(/:id)?',
           name: 'IssueEdit',
           component: IssueEdit
+        },
+        {
+          path: 'View(/:id)?',
+          name: 'IssueView',
+          component: IssueView
         }
       ]
     },

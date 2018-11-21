@@ -5,7 +5,8 @@
         <b-btn size="sm">New</b-btn>
       </router-link>
     </div>
-    <item-list :list="issues" @edit="onEdit"></item-list>
+    <item-list :list="issues" @view="onView"></item-list>
+    <!-- <item-list :list="issues" @edit="onEdit"></item-list> -->
   </div>
 </template>
 
@@ -17,14 +18,14 @@ Vue.component('item-list', {
   template: `    <b-list-group>
         <b-list-group-item v-for="item in list" :key="item._id" @click="selectedItem(item)" button>
           <div class="d-flex w-100 justify-content-between">
-            <h5 class="mb-1">{{ item.title }}</h5>
+            <h6 class="mb-1">{{ item.title }}</h6>
             <small>{{ item.inputDt }}</small>
           </div>
         </b-list-group-item>
       </b-list-group>`,
   methods: {
     selectedItem: function (item) {
-      this.$emit('edit', item)
+      this.$emit('view', item)
     }
   }
 })
@@ -49,6 +50,9 @@ export default {
     },
     onEdit: function (issue) {
       this.$router.push({name: 'IssueEdit', params: {id: issue.seq}})
+    },
+    onView: function (issue) {
+      this.$router.push({name: 'IssueView', params: {id: issue.seq}})
     }
   },
   created: function () {
