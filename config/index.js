@@ -19,7 +19,7 @@ module.exports = {
         }
       },
       '/auth': {
-        target: 'http://localhost:9070',
+        target: 'http://35.200.103.250:9070',
         changeOrigin: true
       }
     },
