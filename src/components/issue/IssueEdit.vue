@@ -21,6 +21,11 @@
                     label-for="tarSolutions">
         <b-form-textarea id="tarSolutions" v-model="issueData.solutions" rows="5" max-rows="10"></b-form-textarea>
       </b-form-group>
+      <b-form-group id="tagsGroup" horizontal
+                    label="Tags"
+                    label-for="txtTags">
+        <b-form-input id="txtTags" v-model="issueData.tags" placeholder="ex) #tag1 #tag2 ..."></b-form-input>
+      </b-form-group>
       <b-btn type="submit" variant="primary">Submit</b-btn>
       <b-btn type="reset">Reset</b-btn>
       <b-btn variant="danger" @click.stop="onDelete">Delete</b-btn>
@@ -41,25 +46,30 @@ export default {
     load: function () {
       this.$http.get('/api/issue/edit?id=' + this.$route.params.id)
         .then((res) => {
-          this.issueData = res.data.results
+          let data = res.data.results
+          data.tags = data.tags.join(' ').toString()
+          this.issueData = data
         })
         .catch((e) => {
           console.error(e)
         })
     },
     onSubmit: function (evt) {
+      let data = Object.assign({}, this.issueData)
+      data.tags = data.tags.split(' ')
       evt.preventDefault()
       if (this.$route.params.id) {
-        this.$http.put('/api/issue', this.issueData, { headers: {'Content-Type': 'application/json'} })
+        this.$http.put('/api/issue', data, { headers: {'Content-Type': 'application/json'} })
           .then((res) => {
             this.$refs.alert.show()
-            this.issueData = res.data.results
+            this.load()
+            // this.issueData = res.data.results
           })
           .catch((e) => {
             console.error(e)
           })
       } else {
-        this.$http.post('/api/issue', this.issueData, { headers: {'Content-Type': 'application/json'} })
+        this.$http.post('/api/issue', data, { headers: {'Content-Type': 'application/json'} })
           .then((res) => {
             if (res.data.errorcode === 1) {
               console.error(res.data.errormessage)
@@ -84,6 +94,12 @@ export default {
         .catch((e) => {
           console.error(e)
         })
+    }
+  },
+  computed: {
+    convertTags: function () {
+      let convertTags = this.issueData.tags.toString()
+      return convertTags
     }
   },
   created: function () {
