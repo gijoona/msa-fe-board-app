@@ -1,58 +1,31 @@
 <template>
   <div>
-    <b-navbar toggleable="md" type="dark" variant="info" id="navigation_bar">
-
-      <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
-
-      <b-navbar-brand href="/main">A Quester</b-navbar-brand>
-
-      <b-collapse is-nav id="nav_collapse">
-
-        <!-- Right aligned nav items -->
-        <b-navbar-nav class="ml-auto">
-
-          <b-nav-form>
-            <b-button-group class="mr-sm-2">
-              <router-link :to="{ name: 'IssueList', params: {} }">
-                <b-btn size="sm">List</b-btn>
-              </router-link>
-            </b-button-group>
-            <b-form-input size="sm" class="mr-sm-2" type="text" placeholder="Search"/>
-            <b-button size="sm" class="my-2 my-sm-0" type="submit">Search</b-button>
-          </b-nav-form>
-        </b-navbar-nav>
-
-      </b-collapse>
-    </b-navbar>
-    <b-form @submit="onSubmit">
-      <b-form-group id="titleGroup" horizontal
-                    label="Title"
-                    label-for="txtTitle">
-        <b-form-input id="txtTitle" v-model="issueData.title" placeholder="Enter Issue Title" v-focus></b-form-input>
-      </b-form-group>
-      <b-form-group id="contentsGroup" horizontal
-                    label="Contents"
-                    label-for="tarContents">
-        <b-form-textarea id="tarContents" v-model="issueData.contents" rows="5" max-rows="10"></b-form-textarea>
-      </b-form-group>
-      <b-form-group id="solutionsGroup" horizontal
-                    label="Solutions"
-                    label-for="tarSolutions">
-        <b-form-textarea id="tarSolutions" v-model="issueData.solutions" rows="5" max-rows="10"></b-form-textarea>
-      </b-form-group>
-      <b-form-group id="tagsGroup" horizontal
-                    label="Tags"
-                    label-for="txtTags">
-        <b-form-input id="txtTags" v-model="issueData.tags" placeholder="ex) #tag1 #tag2 ..."></b-form-input>
-      </b-form-group>
-      <b-btn type="submit" variant="primary">Submit</b-btn>
-      <b-btn type="reset">Reset</b-btn>
-      <b-btn variant="danger" @click.stop="onDelete">Delete</b-btn>
-    </b-form>
-    <b-modal ref="alert">저장되었습니다.</b-modal>
+    <nav-comp @search="onSearch"></nav-comp>
+    <div class="my-3">
+      <b-form @submit="onSubmit">
+        <b-form-group id="titleGroup" horizontal label="Title" label-for="txtTitle">
+          <b-form-input id="txtTitle" v-model="issueData.title" placeholder="Enter Issue Title" v-focus></b-form-input>
+        </b-form-group>
+        <b-form-group id="contentsGroup" horizontal label="Contents" label-for="tarContents">
+          <b-form-textarea id="tarContents" v-model="issueData.contents" rows="5" max-rows="10"></b-form-textarea>
+        </b-form-group>
+        <b-form-group id="solutionsGroup" horizontal label="Solutions" label-for="tarSolutions">
+          <b-form-textarea id="tarSolutions" v-model="issueData.solutions" rows="5" max-rows="10"></b-form-textarea>
+        </b-form-group>
+        <b-form-group id="tagsGroup" horizontal label="Tags" label-for="txtTags">
+          <b-form-input id="txtTags" v-model="issueData.tags" placeholder="ex) #tag1 #tag2 ..."></b-form-input>
+        </b-form-group>
+        <b-btn type="submit" variant="primary">저장</b-btn>
+        <b-btn type="reset">초기화</b-btn>
+        <b-btn variant="danger" @click.stop="onDelete">삭제</b-btn>
+      </b-form>
+      <b-modal ref="alert">저장되었습니다.</b-modal>
+    </div>
   </div>
 </template>
 <script>
+import Nav from '@/components/issue/comp/Nav'
+
 export default {
   name: 'IssueEdit',
   data: function () {
@@ -113,6 +86,9 @@ export default {
         .catch((e) => {
           console.error(e)
         })
+    },
+    onSearch: function (searchTxt) {
+      this.$router.push({name: 'IssueList', params: {searchTxt: searchTxt}})
     }
   },
   computed: {
@@ -125,6 +101,9 @@ export default {
     if (this.$route.params.id) {
       this.load()
     }
+  },
+  components: {
+    navComp: Nav
   }
 }
 </script>

@@ -1,36 +1,16 @@
 <template>
   <div>
-    <b-navbar toggleable="md" type="dark" variant="info" id="navigation_bar">
-
-      <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
-
-      <b-navbar-brand href="/main">A Quester</b-navbar-brand>
-
-      <b-collapse is-nav id="nav_collapse">
-
-        <!-- Right aligned nav items -->
-        <b-navbar-nav class="ml-auto">
-
-          <b-nav-form>
-            <b-button-group class="mr-sm-2">
-              <router-link :to="{ name: 'IssueEdit', params: {} }">
-                <b-btn size="sm">New</b-btn>
-              </router-link>
-            </b-button-group>
-            <b-form-input size="sm" class="mr-sm-2" type="text" placeholder="Search"/>
-            <b-button size="sm" class="my-2 my-sm-0" type="submit">Search</b-button>
-          </b-nav-form>
-        </b-navbar-nav>
-
-      </b-collapse>
-    </b-navbar>
-    <item-list :list="issues" @view="onView"></item-list>
-    <!-- <item-list :list="issues" @edit="onEdit"></item-list> -->
+    <nav-comp @search="onSearch"></nav-comp>
+    <div class="my-3">
+      <item-list :list="issues" @view="onView"></item-list>
+      <!-- <item-list :list="issues" @edit="onEdit"></item-list> -->
+    </div>
   </div>
 </template>
 
 <script>
 import Vue from 'vue'
+import Nav from '@/components/issue/comp/Nav'
 
 Vue.component('item-list', {
   props: ['list'],
@@ -72,10 +52,26 @@ export default {
     },
     onView: function (issue) {
       this.$router.push({name: 'IssueView', params: {id: issue.seq}})
+    },
+    onSearch: function (searchTxt) {
+      this.$http.get('/api/issue/list?search=' + searchTxt)
+        .then((res) => {
+          this.issues = res.data.results
+        })
+        .catch((e) => {
+          console.error(e)
+        })
     }
   },
   created: function () {
-    this.loadIssueList()
+    if (this.$route.params.searchTxt) {
+      this.onSearch(this.$route.params.searchTxt)
+    } else {
+      this.loadIssueList()
+    }
+  },
+  components: {
+    navComp: Nav
   }
 }
 </script>

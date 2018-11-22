@@ -1,35 +1,10 @@
 <template>
   <div>
-    <b-navbar toggleable="md" type="dark" variant="info" id="navigation_bar">
-
-      <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
-
-      <b-navbar-brand href="/main">A Quester</b-navbar-brand>
-
-      <b-collapse is-nav id="nav_collapse">
-
-        <!-- Right aligned nav items -->
-        <b-navbar-nav class="ml-auto">
-
-          <b-nav-form>
-            <b-button-group class="mr-sm-2">
-              <router-link :to="{ name: 'IssueList', params: {} }">
-                <b-btn size="sm">List</b-btn>
-              </router-link>
-              <router-link :to="{ name: 'IssueEdit', params: {id: this.$route.params.id} }">
-                <b-btn size="sm" variant="primary">Edit</b-btn>
-              </router-link>
-            </b-button-group>
-            <b-form-input size="sm" class="mr-sm-2" type="text" placeholder="Search"/>
-            <b-button size="sm" class="my-2 my-sm-0" type="submit">Search</b-button>
-          </b-nav-form>
-        </b-navbar-nav>
-
-      </b-collapse>
-    </b-navbar>
-    <b-card class="text-left"
-            header-bg-variant="info"
-            header-text-variant="light">
+    <nav-comp @search="onSearch"></nav-comp>
+    <div class="my-3">
+      <b-card class="text-left"
+      header-bg-variant="info"
+      header-text-variant="light">
       <h4 slot="header">
         {{ issueData.title }}
       </h4>
@@ -44,8 +19,11 @@
       </div>
     </b-card>
   </div>
+  </div>
 </template>
 <script>
+import Nav from '@/components/issue/comp/Nav'
+
 export default {
   name: 'IssueEdit',
   data: function () {
@@ -73,6 +51,9 @@ export default {
       // 띄어쓰기 치환
       str = str.replace(/\s/g, '&nbsp;')
       return str
+    },
+    onSearch: function (searchTxt) {
+      this.$router.push({name: 'IssueList', params: {searchTxt: searchTxt}})
     }
   },
   computed: {
@@ -87,6 +68,9 @@ export default {
     if (this.$route.params.id) {
       this.load()
     }
+  },
+  components: {
+    navComp: Nav
   }
 }
 </script>
