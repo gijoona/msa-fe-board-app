@@ -3,7 +3,7 @@
     <nav-comp @search="onSearch"></nav-comp>
     <div class="my-3">
       <b-card class="text-left"
-      header-bg-variant="info"
+      :header-bg-variant="issueData.state"
       header-text-variant="light">
       <div slot="header">
         <h4>{{ issueData.title }}</h4>
