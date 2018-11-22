@@ -9,25 +9,8 @@
 </template>
 
 <script>
-import Vue from 'vue'
 import Nav from '@/components/issue/comp/Nav'
-
-Vue.component('item-list', {
-  props: ['list'],
-  template: `    <b-list-group>
-        <b-list-group-item v-for="item in list" :key="item._id" @click="selectedItem(item)" button>
-          <div class="d-flex w-100 justify-content-between">
-            <h6 class="mb-1">{{ item.title }}</h6>
-            <small>{{ item.inputDt }}</small>
-          </div>
-        </b-list-group-item>
-      </b-list-group>`,
-  methods: {
-    selectedItem: function (item) {
-      this.$emit('view', item)
-    }
-  }
-})
+import ItemList from '@/components/issue/comp/ItemList'
 
 export default {
   name: 'IssueList',
@@ -71,7 +54,8 @@ export default {
     }
   },
   components: {
-    navComp: Nav
+    navComp: Nav,
+    itemList: ItemList
   }
 }
 </script>
