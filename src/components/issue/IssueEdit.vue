@@ -3,19 +3,19 @@
     <nav-comp @search="onSearch"></nav-comp>
     <div class="my-3">
       <b-form @submit="onSubmit">
-        <b-form-group id="titleGroup" horizontal label="Title" label-for="txtTitle">
+        <b-form-group id="titleGroup" horizontal label="제목" label-for="txtTitle">
           <b-form-input id="txtTitle" v-model="issueData.title" placeholder="Enter Issue Title" v-focus></b-form-input>
         </b-form-group>
-        <b-form-group id="contentsGroup" horizontal label="Contents" label-for="tarContents">
+        <b-form-group id="contentsGroup" horizontal label="내용" label-for="tarContents">
           <b-form-textarea id="tarContents" v-model="issueData.contents" rows="5" max-rows="10"></b-form-textarea>
         </b-form-group>
-        <b-form-group id="solutionsGroup" horizontal label="Solutions" label-for="tarSolutions">
+        <b-form-group id="solutionsGroup" horizontal label="방안" label-for="tarSolutions">
           <b-form-textarea id="tarSolutions" v-model="issueData.solutions" rows="5" max-rows="10"></b-form-textarea>
         </b-form-group>
-        <b-form-group id="tagsGroup" horizontal label="Tags" label-for="txtTags">
+        <b-form-group id="tagsGroup" horizontal label="해시태그" label-for="txtTags">
           <b-form-input id="txtTags" v-model="issueData.tags" placeholder="ex) #tag1 #tag2 ..."></b-form-input>
         </b-form-group>
-        <b-form-group id="stateGroup" horizontal label="State" label-for="selState">
+        <b-form-group id="stateGroup" horizontal label="상태" label-for="selState">
           <b-form-select v-model="issueData.state" :options="options">
             <template slot="first">
               <!-- this slot appears above the options from 'options' prop -->
