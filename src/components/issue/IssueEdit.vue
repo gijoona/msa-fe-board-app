@@ -15,6 +15,14 @@
         <b-form-group id="tagsGroup" horizontal label="Tags" label-for="txtTags">
           <b-form-input id="txtTags" v-model="issueData.tags" placeholder="ex) #tag1 #tag2 ..."></b-form-input>
         </b-form-group>
+        <b-form-group id="stateGroup" horizontal label="State" label-for="selState">
+          <b-form-select v-model="issueData.state" :options="options">
+            <template slot="first">
+              <!-- this slot appears above the options from 'options' prop -->
+              <option :value="null" disabled>-- Please select an state --</option>
+            </template>
+          </b-form-select>
+        </b-form-group>
         <b-btn type="submit" variant="primary">저장</b-btn>
         <b-btn type="reset">초기화</b-btn>
         <b-btn variant="danger" @click.stop="onDelete">삭제</b-btn>
@@ -31,7 +39,17 @@ export default {
   data: function () {
     return {
       msg: 'issue view page',
-      issueData: {}
+      issueData: {state: null},
+      options: [
+        {value: 'primary', text: 'Primary'},
+        {value: 'secondary', text: 'Secondary'},
+        {value: 'success', text: 'Success'},
+        {value: 'danger', text: 'Danger'},
+        {value: 'warning', text: 'Warning'},
+        {value: 'info', text: 'Info'},
+        {value: 'light', text: 'Light'},
+        {value: 'dark', text: 'Dark'}
+      ]
     }
   },
   methods: {
@@ -48,7 +66,7 @@ export default {
     },
     onSubmit: function (evt) {
       let data = Object.assign({}, this.issueData)
-      data.tags = data.tags.split(' ')
+      data.tags = (data.tags || '').split(' ')
       evt.preventDefault()
       if (this.$route.params.id) {
         this.$http.put('/api/issue', data, { headers: {'Content-Type': 'application/json'} })
