@@ -10,20 +10,17 @@
       <!-- Right aligned nav items -->
       <b-navbar-nav class="ml-auto">
 
-        <b-button-group class="mr-sm-2">
-          <router-link :to="{ name: 'IssueEdit', params: {} }">
-            <b-btn size="sm">새글</b-btn>
-          </router-link>
-          <router-link :to="{ name: 'IssueList', params: {} }">
-            <b-btn size="sm">목록</b-btn>
-          </router-link>
-          <router-link :to="{ name: 'IssueEdit', params: {id: this.$route.params.id} }" v-show="isView">
-            <b-btn size="sm">수정</b-btn>
-          </router-link>
-        </b-button-group>
-        <b-nav-form @submit="onSubmit">
-          <b-form-input size="sm" class="mr-sm-2" type="text" v-model="searchTxt" placeholder="제목 + 내용 검색"/>
-          <b-button size="sm" class="my-2 my-sm-0" type="submit">검색</b-button>
+        <b-nav-item :to="{ name: 'IssueEdit', params: {} }">새글</b-nav-item>
+        <b-nav-item :to="{ name: 'IssueList', params: {} }">목록</b-nav-item>
+        <b-nav-item :to="{ name: 'IssueEdit', params: {id: this.$route.params.id} }" v-show="isView">수정</b-nav-item>
+
+        <b-nav-form @submit="onSubmit" class="ml-3">
+          <b-input-group>
+            <b-form-input size="sm" type="text" v-model="searchTxt" placeholder="제목 + 내용 검색"/>
+            <b-input-group-append>
+              <b-button size="sm" type="submit">검색</b-button>
+            </b-input-group-append>
+          </b-input-group>
         </b-nav-form>
       </b-navbar-nav>
 
