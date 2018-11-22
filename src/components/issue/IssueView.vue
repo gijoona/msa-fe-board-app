@@ -5,9 +5,10 @@
       <b-card class="text-left"
       header-bg-variant="info"
       header-text-variant="light">
-      <h4 slot="header">
-        {{ issueData.title }}
-      </h4>
+      <div slot="header">
+        <h4>{{ issueData.title }}</h4>
+        <small>{{ issueData.inputDt }}</small>
+      </div>
       <b-card title="Contents" class="mb-2">
         <div v-html="contentsToHtml"></div>
       </b-card>
