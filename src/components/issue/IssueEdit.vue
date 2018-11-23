@@ -1,6 +1,5 @@
 <template>
   <div>
-    <nav-comp @search="onSearch"></nav-comp>
     <div class="my-3">
       <b-form @submit="onSubmit">
         <b-form-group id="titleGroup" horizontal label="제목" label-for="txtTitle">
@@ -32,8 +31,6 @@
   </div>
 </template>
 <script>
-import Nav from '@/components/issue/comp/Nav'
-
 export default {
   name: 'IssueEdit',
   data: function () {
@@ -119,9 +116,6 @@ export default {
     if (this.$route.params.id) {
       this.load()
     }
-  },
-  components: {
-    navComp: Nav
   }
 }
 </script>

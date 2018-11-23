@@ -1,6 +1,5 @@
 <template>
   <div>
-    <nav-comp @search="onSearch"></nav-comp>
     <div class="my-3">
       <b-card class="text-left"
       :header-bg-variant="issueData.state"
@@ -23,8 +22,6 @@
   </div>
 </template>
 <script>
-import Nav from '@/components/issue/comp/Nav'
-
 export default {
   name: 'IssueEdit',
   data: function () {
@@ -69,9 +66,6 @@ export default {
     if (this.$route.params.id) {
       this.load()
     }
-  },
-  components: {
-    navComp: Nav
   }
 }
 </script>

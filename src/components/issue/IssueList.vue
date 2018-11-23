@@ -1,6 +1,5 @@
 <template>
   <div>
-    <nav-comp @search="onSearch"></nav-comp>
     <div class="my-3">
       <item-list :list="issues" @view="onView"></item-list>
       <!-- <item-list :list="issues" @edit="onEdit"></item-list> -->
@@ -9,7 +8,6 @@
 </template>
 
 <script>
-import Nav from '@/components/issue/comp/Nav'
 import ItemList from '@/components/issue/comp/ItemList'
 
 export default {
@@ -47,14 +45,13 @@ export default {
     }
   },
   created: function () {
-    if (this.$route.params.searchTxt) {
-      this.onSearch(this.$route.params.searchTxt)
+    if (this.$route.query.searchTxt) {
+      this.onSearch(this.$route.query.searchTxt)
     } else {
       this.loadIssueList()
     }
   },
   components: {
-    navComp: Nav,
     itemList: ItemList
   }
 }
