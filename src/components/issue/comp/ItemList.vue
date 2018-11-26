@@ -2,7 +2,9 @@
   <b-list-group>
     <b-list-group-item v-for="item in list" :key="item._id" :variant="item.state" @click="selectedItem(item)" button>
       <div class="d-flex w-100 justify-content-between">
-        <h6 class="mb-1">{{ item.title }}</h6>
+        <h6 class="mb-1">
+          <b-badge v-show="item.isAnswer">complete</b-badge> {{ item.title }}
+        </h6>
         <small>{{ diffDate(item.inputDt) }}</small>
       </div>
     </b-list-group-item>
