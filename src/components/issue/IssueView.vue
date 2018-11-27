@@ -15,13 +15,61 @@
         <div v-html="solutionsToHtml"></div>
       </b-card>
       <div slot="footer">
-        {{ issueData.tags }}
+        <tag-item v-for="tag in tagsToArray" :tag="tag" :key="tag"></tag-item>
       </div>
     </b-card>
   </div>
   </div>
 </template>
 <script>
+import Vue from 'vue'
+
+Vue.component('tagItem', {
+  props: ['tag'],
+  template: `
+    <span>
+      <b-btn :id="targetId" variant="link" @click.stop="loadHashInfo">{{ tag }}</b-btn>
+      <b-popover ref="popover" :target="targetId" :title="popoverConfig.title">
+        {{ popoverConfig.content }}
+      </b-popover>
+    </span>
+  `,
+  data: function () {
+    return {
+      popoverConfig: {
+        title: this.tag,
+        content: this.tag
+      },
+      isShow: false
+    }
+  },
+  methods: {
+    loadHashInfo: function () {
+      this.$http.get('/api/issue/hashinfo?hashtag=' + this.targetId)
+        .then((res) => {
+          console.log(res.data.result)
+          this.popoverConfig = {title: this.tag, content: this.tag}
+          this.togglePopover()
+        })
+        .catch((e) => { console.error(e) })
+    },
+    togglePopover: function () {
+      if (this.isShow) {
+        this.isShow = false
+        this.$refs.popover.$emit('close')
+      } else {
+        this.isShow = true
+        this.$refs.popover.$emit('open')
+      }
+    }
+  },
+  computed: {
+    targetId: function () {
+      return (this.tag || '').replace('#', '')
+    }
+  }
+})
+
 export default {
   name: 'IssueEdit',
   data: function () {
@@ -60,6 +108,9 @@ export default {
     },
     solutionsToHtml: function () {
       return this.convertHtml(this.issueData.solutions)
+    },
+    tagsToArray: function () {
+      return (this.issueData.tags || '').split(' ')
     }
   },
   created: function () {
