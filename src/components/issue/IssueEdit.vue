@@ -26,7 +26,16 @@
         <b-btn type="reset">초기화</b-btn>
         <b-btn variant="danger" @click.stop="onDelete">삭제</b-btn>
       </b-form>
-      <b-modal ref="alert">저장되었습니다.</b-modal>
+      <b-modal ref="alert"
+              title="알림"
+              header-bg-variant="info"
+              header-text-variant="light">
+        저장되었습니다.
+        <div slot="modal-footer">
+          <b-btn variant="secondary" @click="onSearch('')">리스트</b-btn>
+          <b-btn variant="primary" @click="hideModal">닫기</b-btn>
+        </div>
+      </b-modal>
     </div>
   </div>
 </template>
@@ -104,6 +113,9 @@ export default {
     },
     onSearch: function (searchTxt) {
       this.$router.push({name: 'IssueList', params: {searchTxt: searchTxt}})
+    },
+    hideModal: function () {
+      this.$refs.alert.hide()
     }
   },
   computed: {
