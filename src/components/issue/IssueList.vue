@@ -35,7 +35,7 @@ export default {
       this.$router.push({name: 'IssueView', params: {id: issue.seq}})
     },
     onSearch: function (searchTxt) {
-      this.$http.get('/api/issue/list?search=' + searchTxt)
+      this.$http.get('/api/issue/list?search=' + encodeURIComponent(searchTxt))
         .then((res) => {
           this.issues = res.data.results
         })
@@ -45,8 +45,9 @@ export default {
     }
   },
   created: function () {
-    if (this.$route.query.searchTxt) {
-      this.onSearch(this.$route.query.searchTxt)
+    let searchTxt = this.$route.query.searchTxt || this.$route.params.searchTxt
+    if (searchTxt) {
+      this.onSearch(searchTxt)
     } else {
       this.loadIssueList()
     }
