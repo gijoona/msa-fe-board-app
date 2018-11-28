@@ -1,7 +1,12 @@
 <template>
   <div>
     <div class="my-3">
-      <item-list :list="issues" @view="onView"></item-list>
+      <b-card body-class="p-0">
+        <div slot="header">
+          <div class="ml-auto"> 전체 {{ pageInfo.total }} 건 </div>
+        </div>
+        <item-list :list="issues" @view="onView" class="p-0"></item-list>
+      </b-card>
       <!-- <item-list :list="issues" @edit="onEdit"></item-list> -->
     </div>
   </div>
@@ -15,7 +20,8 @@ export default {
   data: function () {
     return {
       msg: 'issue page',
-      issues: []
+      issues: [],
+      pageInfo: {}
     }
   },
   methods: {
@@ -23,6 +29,7 @@ export default {
       this.$http.get('/api/issue/list')
         .then((res) => {
           this.issues = res.data.results
+          this.pageInfo = res.data.pageInfo
         })
         .catch((e) => {
           console.error(e)
@@ -38,6 +45,7 @@ export default {
       this.$http.get('/api/issue/list?search=' + encodeURIComponent(searchTxt))
         .then((res) => {
           this.issues = res.data.results
+          this.pageInfo = res.data.pageInfo
         })
         .catch((e) => {
           console.error(e)
