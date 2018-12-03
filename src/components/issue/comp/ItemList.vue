@@ -23,20 +23,20 @@ export default {
     },
     diffDate: function (inputDt) {
       let diffJSON = this.diffCalc(inputDt, Date.now())
-      if (diffJSON.years > 0) {
-        return diffJSON.years + '년 전'
-      } else if (diffJSON.months > 0) {
-        return diffJSON.months + '개월 전'
-      } else if (diffJSON.weeks > 0) {
-        return diffJSON.weeks + '주 전'
-      } else if (diffJSON.days > 0) {
-        return diffJSON.days + '일 전'
-      } else if (diffJSON.hours > 0) {
-        return diffJSON.hours + '시간 전'
-      } else if (diffJSON.minutes > 0) {
-        return diffJSON.minutes + '분 전'
-      } else {
+      if (diffJSON.seconds < 60) {
         return diffJSON.seconds + '초 전'
+      } else if (diffJSON.minutes < 60) {
+        return diffJSON.minutes + '분 전'
+      } else if (diffJSON.hours < 24) {
+        return diffJSON.hours + '시간 전'
+      } else if (diffJSON.days < 7) {
+        return diffJSON.days + '일 전'
+      } else if (diffJSON.weeks < 4) {
+        return diffJSON.weeks + '주 전'
+      } else if (diffJSON.months < 12) {
+        return diffJSON.months + '개월 전'
+      } else {
+        return diffJSON.years + '년 전'
       }
     },
     diffCalc: function (date1, date2, interval) {

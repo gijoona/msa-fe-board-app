@@ -45,7 +45,7 @@ export default {
   data: function () {
     return {
       msg: 'issue view page',
-      issueData: {state: null},
+      issueData: {state: null, geoLoc: []},
       options: [
         {value: 'primary', text: 'Primary'},
         {value: 'secondary', text: 'Secondary'},
@@ -65,15 +65,17 @@ export default {
           let data = res.data.results
           data.tags = data.tags.join(' ').toString()
           this.issueData = data
+          this.setLocation()
         })
         .catch((e) => {
           console.error(e)
         })
     },
     onSubmit: function (evt) {
+      evt.preventDefault()
+
       let data = Object.assign({}, this.issueData)
       data.tags = (data.tags || '').split(' ')
-      evt.preventDefault()
       if (this.$route.params.id) {
         this.$http.put('/api/issue', data, { headers: {'Content-Type': 'application/json'} })
           .then((res) => {
@@ -116,6 +118,32 @@ export default {
     },
     hideModal: function () {
       this.$refs.alert.hide()
+    },
+    setLocation: function () {
+      // GPS를 지원한다면
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            /* GPS 정보
+            position = {
+              coords: {}, // 좌표정보
+              timestamp: Number
+            }
+            */
+            this.issueData.geoLoc = [position.coords.latitude, position.coords.longitude]
+          },
+          (err) => {
+            console.error(err)
+          }, {
+            enableHighAccuracy: false,
+            maximumAge: 0,
+            timeout: Infinity
+          }
+        )
+      } else {
+        console.log('GPS를 지원하지 않습니다.')
+        this.issueData.geoLoc = []
+      }
     }
   },
   computed: {
@@ -128,6 +156,7 @@ export default {
     if (this.$route.params.id) {
       this.load()
     }
+    this.setLocation()
   }
 }
 </script>

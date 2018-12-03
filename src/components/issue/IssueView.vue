@@ -3,10 +3,9 @@
     <div class="my-3">
       <b-card class="text-left"
       :header-bg-variant="issueData.state"
-      header-text-variant="light">
+      :header-text-variant="headerTextVariant">
       <div slot="header">
-        <h4>{{ issueData.title }}</h4>
-        <small>{{ issueData.inputDt }}</small>
+        <view-header :title="issueData.title" :geoLocation="issueData.geoLocation" :inputDt="issueData.inputDt"></view-header>
       </div>
       <b-card title="Contents" class="mb-2">
         <div v-html="contentsToHtml"></div>
@@ -15,21 +14,23 @@
         <div v-html="solutionsToHtml"></div>
       </b-card>
       <div slot="footer">
-        <tag-item v-for="tag in tagsToArray" :tag="tag" :key="tag"></tag-item>
+        <view-tag-item v-for="tag in tagsToArray" :tag="tag" :key="tag"></view-tag-item>
       </div>
     </b-card>
   </div>
   </div>
 </template>
 <script>
-import TagItem from '@/components/issue/comp/TagItem'
+import ViewHeader from '@/components/issue/comp/view/Header'
+import ViewTagItem from '@/components/issue/comp/view/TagItem'
 
 export default {
   name: 'IssueEdit',
   data: function () {
     return {
       msg: 'issue view page',
-      issueData: {}
+      issueData: {},
+      headerTextVariant: 'light'
     }
   },
   methods: {
@@ -38,7 +39,8 @@ export default {
         .then((res) => {
           let data = res.data.results
           data.tags = data.tags.join(' ').toString()
-          this.issueData = data
+          this.issueData = data // issueData setting
+          this.headerTextVariant = (data.state || '') !== 'light' ? 'light' : 'dark' // header text variant 설정
         })
         .catch((e) => {
           console.error(e)
@@ -73,7 +75,8 @@ export default {
     }
   },
   components: {
-    tagItem: TagItem
+    viewTagItem: ViewTagItem,
+    viewHeader: ViewHeader
   }
 }
 </script>
