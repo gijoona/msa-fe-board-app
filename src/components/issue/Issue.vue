@@ -3,18 +3,22 @@
     <nav-comp @search="goListAndSearch"></nav-comp>
     <b-container fluid class="p-0">
       <b-row>
-        <b-col cols="11">
+        <b-col>
           <router-view :key="$route.fullPath"></router-view>
-        </b-col>
-        <b-col sm="true">
-          <b-nav vertical class="m-3">
-            <b-nav-item :to="{name: 'IssueEdit'}" v-show="notEdit">새글</b-nav-item>
-            <b-nav-item :to="{name: 'IssueList'}">목록</b-nav-item>
-            <b-nav-item :to="{name: 'IssueEdit', params: {id: this.$route.params.id}}" v-show="isView">수정</b-nav-item>
-          </b-nav>
         </b-col>
       </b-row>
     </b-container>
+    <div class="commandPanel">
+      <b-dropdown id="command-dropup" text="기능" variant="success" size="lg" class="m-2" dropup right>
+        <b-dropdown-item :to="{name: 'IssueEdit'}" v-show="notEdit">새글</b-dropdown-item>
+        <b-dropdown-item :to="{name: 'IssueList'}">목록</b-dropdown-item>
+        <b-dropdown-item :to="{name: 'IssueEdit', params: {id: this.$route.params.id}}" v-show="isView">수정</b-dropdown-item>
+      </b-dropdown>
+    </div>
+    <!-- <span class="commandPanel">
+      <b-nav vertical class="m-3">
+      </b-nav>
+    </span> -->
   </div>
 </template>
 <script>
@@ -47,3 +51,11 @@ export default {
   }
 }
 </script>
+<style>
+.commandPanel {
+  position: fixed;
+  bottom: 50px;
+  right: 80px;
+  z-index: 100;
+}
+</style>
