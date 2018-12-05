@@ -2,7 +2,7 @@
   <b-form-group :id="currId+'Group'" horizontal :label="label" :label-for="'tar'+currId">
     <b-row>
       <b-col cols="6">
-        <b-form-textarea :id="'tar'+currId" v-model="contents" rows="5" max-rows="10" @input="onInput"></b-form-textarea>
+        <b-form-textarea :id="'tar'+currId" v-model="data" rows="5" max-rows="10" @input="onInput"></b-form-textarea>
       </b-col>
       <b-col cols="1">
         <b-btn @click="showCollapse = !showCollapse"
@@ -14,7 +14,7 @@
       </b-col>
       <b-col cols="5">
         <b-collapse :id="'collapse'+currId" v-model="showCollapse" >
-          <vue-markdown class="preview" :source="contents" :html="mdOpts.html"></vue-markdown>
+          <vue-markdown class="preview" :source="data" :html="mdOpts.html"></vue-markdown>
         </b-collapse>
       </b-col>
     </b-row>
@@ -28,7 +28,6 @@ export default {
   props: ['currId', 'label', 'data'],
   data: function () {
     return {
-      contents: this.data,
       mdOpts: {
         show: true,
         html: false,
@@ -46,7 +45,8 @@ export default {
       console.log('markdown is parsed !')
     },
     onInput: function () {
-      this.$emit('update:data', this.contents)
+      console.log('onInput')
+      this.$emit('update:data', this.data)
     },
     toggleMDE: function () {
 
