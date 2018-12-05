@@ -1,45 +1,41 @@
 <template>
-  <div>
-    <div class="my-3">
-      <b-form @submit="onSubmit">
-        <b-form-group id="titleGroup" horizontal label="제목" label-for="txtTitle">
-          <b-form-input id="txtTitle" v-model="issueData.title" placeholder="Enter Issue Title" v-focus></b-form-input>
-        </b-form-group>
-        <b-form-group id="contentsGroup" horizontal label="내용" label-for="tarContents">
-          <b-form-textarea id="tarContents" v-model="issueData.contents" rows="5" max-rows="10"></b-form-textarea>
-        </b-form-group>
-        <b-form-group id="solutionsGroup" horizontal label="방안" label-for="tarSolutions">
-          <b-form-textarea id="tarSolutions" v-model="issueData.solutions" rows="5" max-rows="10"></b-form-textarea>
-        </b-form-group>
-        <b-form-group id="tagsGroup" horizontal label="해시태그" label-for="txtTags">
-          <b-form-input id="txtTags" v-model="issueData.tags" placeholder="ex) #tag1 #tag2 ..."></b-form-input>
-        </b-form-group>
-        <b-form-group id="stateGroup" horizontal label="상태" label-for="selState">
-          <b-form-select v-model="issueData.state" :options="options">
-            <template slot="first">
-              <!-- this slot appears above the options from 'options' prop -->
-              <option :value="null" disabled>-- Please select an state --</option>
-            </template>
-          </b-form-select>
-        </b-form-group>
-        <b-btn type="submit" variant="primary">저장</b-btn>
-        <b-btn type="reset">초기화</b-btn>
-        <b-btn variant="danger" @click.stop="onDelete">삭제</b-btn>
-      </b-form>
-      <b-modal ref="alert"
-              title="알림"
-              header-bg-variant="info"
-              header-text-variant="light">
-        저장되었습니다.
-        <div slot="modal-footer">
-          <b-btn variant="secondary" @click="onSearch('')">리스트</b-btn>
-          <b-btn variant="primary" @click="hideModal">닫기</b-btn>
-        </div>
-      </b-modal>
-    </div>
+  <div class="my-3">
+    <b-form @submit="onSubmit">
+      <b-form-group id="titleGroup" horizontal label="제목" label-for="txtTitle">
+        <b-form-input id="txtTitle" v-model="issueData.title" placeholder="Enter Issue Title" v-focus></b-form-input>
+      </b-form-group>
+      <edit-markdown currId="content" label="내용" :data="issueData.contents" @update:data="val => issueData.contents = val"></edit-markdown>
+      <edit-markdown currId="solution" label="방안" :data="issueData.solutions" @update:data="val => issueData.solutions = val"></edit-markdown>
+      <b-form-group id="tagsGroup" horizontal label="해시태그" label-for="txtTags">
+        <b-form-input id="txtTags" v-model="issueData.tags" placeholder="ex) #tag1 #tag2 ..."></b-form-input>
+      </b-form-group>
+      <b-form-group id="stateGroup" horizontal label="상태" label-for="selState">
+        <b-form-select v-model="issueData.state" :options="options">
+          <template slot="first">
+            <!-- this slot appears above the options from 'options' prop -->
+            <option :value="null" disabled>-- Please select an state --</option>
+          </template>
+        </b-form-select>
+      </b-form-group>
+      <b-btn type="submit" variant="primary">저장</b-btn>
+      <b-btn type="reset">초기화</b-btn>
+      <b-btn variant="danger" @click.stop="onDelete">삭제</b-btn>
+    </b-form>
+    <b-modal ref="alert"
+            title="알림"
+            header-bg-variant="info"
+            header-text-variant="light">
+      저장되었습니다.
+      <div slot="modal-footer">
+        <b-btn variant="secondary" @click="onSearch('')">리스트</b-btn>
+        <b-btn variant="primary" @click="hideModal">닫기</b-btn>
+      </div>
+    </b-modal>
   </div>
 </template>
 <script>
+import EditMarkdown from '@/components/issue/comp/edit/EditMarkdown'
+
 export default {
   name: 'IssueEdit',
   data: function () {
@@ -151,6 +147,9 @@ export default {
       let convertTags = this.issueData.tags.toString()
       return convertTags
     }
+  },
+  components: {
+    EditMarkdown
   },
   created: function () {
     if (this.$route.params.id) {

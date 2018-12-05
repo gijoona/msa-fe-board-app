@@ -1,18 +1,32 @@
 <template>
   <fieldset class="mb-2">
     <legend>{{ legend }}</legend>
-    <div v-html="convertHtml"></div>
+    <vue-markdown :source="contents" :html="mdOpts.html"></vue-markdown>
+    <!-- <div v-html="convertHtml"></div> -->
   </fieldset>
 </template>
 <script>
+import VueMarkdown from 'vue-markdown'
+
 export default {
   name: 'ViewContents',
   props: ['legend', 'contents'],
   data: function () {
-    return {}
+    return {
+      mdOpts: {
+        show: true,
+        html: false,
+        breaks: true,
+        linkify: true,
+        emoji: true,
+        typographer: true,
+        toc: false
+      }
+    }
   },
   computed: {
     convertHtml: function () {
+      // vue-markdown을 적용함에 따라 사용안함!!!
       let str = (this.contents || '').toString()
       // 개행문자 치환
       str = str.replace(/\n/g, '<br/>')
@@ -25,6 +39,9 @@ export default {
       })
       return str
     }
+  },
+  components: {
+    VueMarkdown
   }
 }
 </script>
