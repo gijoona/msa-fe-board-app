@@ -52,6 +52,11 @@ export default {
       str = str.replace(/\n/g, '<br/>')
       // 띄어쓰기 치환
       str = str.replace(/\s/g, '&nbsp;')
+      // url 링크처리
+      let regex = new RegExp('(?:(?:https?|ftp|file):\\/\\/|www\\.|ftp\\.)(?:\\([-A-Z0-9+&@#\\/%=~_|$?!:,.]*\\)|[-A-Z0-9+&@#\\/%=~_|$?!:,.])*(?:\\([-A-Z0-9+&@#\\/%=~_|$?!:,.]*\\)|[A-Z0-9+&@#\\/%=~_|$])', 'igm')
+      str = str.replace(regex, function (str, grp1) {
+        return `<a href="${str}" target="_blank">${str}</a>`
+      })
       return str
     },
     onSearch: function (searchTxt) {
