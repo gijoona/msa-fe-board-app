@@ -7,12 +7,14 @@
       <div slot="header">
         <view-header :title="issueData.title" :geoLocation="issueData.geoLocation" :inputDt="issueData.inputDt"></view-header>
       </div>
-      <b-card title="Contents" class="mb-2">
+      <fieldset class="mb-3">
+        <legend> 내용 </legend>
         <div v-html="contentsToHtml"></div>
-      </b-card>
-      <b-card title="Solutions" class="mb-2">
+      </fieldset>
+      <fieldset class="mb-2">
+        <legend> 방안 </legend>
         <div v-html="solutionsToHtml"></div>
-      </b-card>
+      </fieldset>
       <div slot="footer">
         <view-tag-item v-for="tag in tagsToArray" :tag="tag" :key="tag"></view-tag-item>
       </div>
@@ -85,3 +87,20 @@ export default {
   }
 }
 </script>
+<style>
+fieldset {
+    display: block;
+    margin-left: 2px;
+    margin-right: 2px;
+    padding-top: 0.35em;
+    padding-bottom: 0.625em;
+    padding-left: 1em;
+    padding-right: 1em;
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    border-radius: 0.25rem;
+}
+legend {
+  width: 55px;
+  max-width: 100%;
+}
+</style>
