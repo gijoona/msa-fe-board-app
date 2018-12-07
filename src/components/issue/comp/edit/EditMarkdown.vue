@@ -1,21 +1,18 @@
 <template>
   <b-form-group :id="currId+'Group'" horizontal :label="label" :label-for="'tar'+currId">
     <b-row>
-      <b-col cols="6">
-        <b-form-textarea :id="'tar'+currId" v-model="data" rows="5" max-rows="10" @input="onInput"></b-form-textarea>
-      </b-col>
-      <b-col cols="1">
-        <b-btn @click="showCollapse = !showCollapse"
-               :class="showCollapse ? 'collapsed' : null"
-               :aria-controls="'collapse'+currId"
-               :aria-expanded="showCollapse ? 'true' : 'false'">
-          Toggle Collapse
+      <b-col :cols="editCols">
+        <b-form-textarea :id="'tar'+currId" v-model="content" rows="5" max-rows="10" @input="onInput"></b-form-textarea>
+        <b-btn class="preview-btn p-1" @click="showCollapse = !showCollapse"
+          :aria-controls="'collapse'+currId"
+          :aria-expanded="showCollapse ? 'true' : 'false'">
+          view
         </b-btn>
       </b-col>
-      <b-col cols="5">
-        <b-collapse :id="'collapse'+currId" v-model="showCollapse" >
-          <vue-markdown class="preview" :source="data" :html="mdOpts.html"></vue-markdown>
-        </b-collapse>
+      <b-col :cols="preCols">
+        <div :style="{'display' : showCollapse ? 'inline' : 'none'}">
+          <vue-markdown class="preview" :show="showCollapse" :source="content" :html="mdOpts.html"></vue-markdown>
+        </div>
       </b-col>
     </b-row>
   </b-form-group>
@@ -28,6 +25,7 @@ export default {
   props: ['currId', 'label', 'data'],
   data: function () {
     return {
+      content: '',
       mdOpts: {
         show: true,
         html: false,
@@ -40,16 +38,25 @@ export default {
       showCollapse: false
     }
   },
+  watch: {
+    data: function () {
+      this.content = this.data
+    }
+  },
   methods: {
     allRight: function (htmlStr) {
       console.log('markdown is parsed !')
     },
     onInput: function () {
-      console.log('onInput')
-      this.$emit('update:data', this.data)
+      this.$emit('update:data', this.content)
+    }
+  },
+  computed: {
+    editCols: function () {
+      return this.showCollapse ? 6 : 12
     },
-    toggleMDE: function () {
-
+    preCols: function () {
+      return this.showCollapse ? 6 : 0
     }
   },
   components: {
@@ -70,5 +77,13 @@ export default {
 }
 .full-height {
   height: 100%;
+}
+.preview-btn {
+  position: relative;
+  float: right;
+  top: -45px;
+  right: 10px;
+  z-index: 10;
+  opacity: 0.5;
 }
 </style>

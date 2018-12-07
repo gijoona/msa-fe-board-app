@@ -41,7 +41,7 @@ export default {
   data: function () {
     return {
       msg: 'issue view page',
-      issueData: {state: null, geoLoc: []},
+      issueData: {contents: '', solutions: '', state: null, geoLoc: []},
       options: [
         {value: 'primary', text: 'Primary'},
         {value: 'secondary', text: 'Secondary'},
