@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import ItemList from '@/components/issue/comp/ItemList'
+import ItemList from '@/components/cmm/list/ItemList'
 
 export default {
   name: 'IssueList',

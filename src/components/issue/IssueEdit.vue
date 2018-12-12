@@ -1,15 +1,15 @@
 <template>
   <div class="my-3">
     <b-form @submit="onSubmit">
-      <b-form-group id="titleGroup" horizontal label="제목" label-for="txtTitle">
+      <b-form-group id="titleGroup" horizontal label="Title" label-for="txtTitle">
         <b-form-input id="txtTitle" v-model="issueData.title" placeholder="Enter Issue Title" v-focus></b-form-input>
       </b-form-group>
-      <edit-markdown currId="content" label="내용" :data="issueData.contents" @update:data="val => issueData.contents = val"></edit-markdown>
-      <edit-markdown currId="solution" label="방안" :data="issueData.solutions" @update:data="val => issueData.solutions = val"></edit-markdown>
-      <b-form-group id="tagsGroup" horizontal label="해시태그" label-for="txtTags">
+      <edit-markdown currId="content" label="Contents" :data="issueData.contents" @update:data="val => issueData.contents = val"></edit-markdown>
+      <edit-markdown currId="solution" label="Solutions" :data="issueData.solutions" @update:data="val => issueData.solutions = val"></edit-markdown>
+      <b-form-group id="tagsGroup" horizontal label="Tags" label-for="txtTags">
         <b-form-input id="txtTags" v-model="issueData.tags" placeholder="ex) #tag1 #tag2 ..."></b-form-input>
       </b-form-group>
-      <b-form-group id="stateGroup" horizontal label="상태" label-for="selState">
+      <b-form-group id="stateGroup" horizontal label="State" label-for="selState">
         <b-form-select v-model="issueData.state" :options="options">
           <template slot="first">
             <!-- this slot appears above the options from 'options' prop -->
@@ -34,7 +34,7 @@
   </div>
 </template>
 <script>
-import EditMarkdown from '@/components/issue/comp/edit/EditMarkdown'
+import EditMarkdown from '@/components/cmm/edit/EditMarkdown'
 
 export default {
   name: 'IssueEdit',

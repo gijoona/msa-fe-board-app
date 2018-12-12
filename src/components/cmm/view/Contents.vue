@@ -1,6 +1,6 @@
 <template>
   <fieldset class="mb-2">
-    <legend>{{ legend }}</legend>
+    <legend><strong>{{ legend }}</strong></legend>
     <vue-markdown :source="contents" :html="mdOpts.html"></vue-markdown>
     <!-- <div v-html="convertHtml"></div> -->
   </fieldset>
@@ -58,7 +58,7 @@ fieldset {
     border-radius: 0.25rem;
 }
 legend {
-  width: 55px;
+  width: 120px;
   max-width: 100%;
 }
 </style>

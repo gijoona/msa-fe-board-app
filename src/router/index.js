@@ -23,6 +23,9 @@ import IssueList from '@/components/issue/IssueList'
 import IssueEdit from '@/components/issue/IssueEdit'
 import IssueView from '@/components/issue/IssueView'
 
+// momo sources
+import Memo from '@/components/memo/Memo'
+
 Vue.use(Router)
 
 export default new Router({
@@ -72,6 +75,11 @@ export default new Router({
           component: IssueView
         }
       ]
+    },
+    {
+      path: '/memo',
+      component: Memo,
+      children: []
     },
     {
       path: '/board',

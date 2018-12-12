@@ -22,7 +22,7 @@
   </div>
 </template>
 <script>
-import Nav from '@/components/issue/comp/Nav'
+import Nav from '@/components/cmm/Nav'
 
 export default {
   name: 'Issue',

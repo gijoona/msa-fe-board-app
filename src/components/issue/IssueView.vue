@@ -7,8 +7,8 @@
       <div slot="header">
         <view-header :title="issueData.title" :geoLocation="issueData.geoLocation" :inputDt="issueData.inputDt"></view-header>
       </div>
-      <view-contents legend="내용" :contents="issueData.contents"></view-contents>
-      <view-contents legend="방안" :contents="issueData.solutions"></view-contents>
+      <view-contents legend="Contents" :contents="issueData.contents"></view-contents>
+      <view-contents legend="Solutions" :contents="issueData.solutions"></view-contents>
       <div slot="footer">
         <view-tag-item v-for="tag in tagsToArray" :tag="tag" :key="tag"></view-tag-item>
       </div>
@@ -17,9 +17,9 @@
   </div>
 </template>
 <script>
-import ViewHeader from '@/components/issue/comp/view/Header'
-import ViewContents from '@/components/issue/comp/view/Contents'
-import ViewTagItem from '@/components/issue/comp/view/TagItem'
+import ViewHeader from '@/components/cmm/view/Header'
+import ViewContents from '@/components/cmm/view/Contents'
+import ViewTagItem from '@/components/cmm/view/TagItem'
 
 export default {
   name: 'IssueEdit',
