@@ -37,10 +37,13 @@ export default {
     }
   },
   methods: {
-    onLoad: function () {
+    onLoad: function (cb) {
       this.$http.get('/api/memo')
         .then((res) => {
           this.memoList = res.data.results
+          if (cb) {
+            cb(this.memoList)
+          }
         })
         .catch((err) => {
           console.error(err)
@@ -117,7 +120,12 @@ export default {
     itemView: ItemView
   },
   created: function () {
-    this.onLoad()
+    this.onLoad((list) => {
+      console.log(list)
+      if (list.length > 0) {
+        this.memoItem = list[0]
+      }
+    })
   }
 }
 </script>
