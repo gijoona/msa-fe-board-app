@@ -63,14 +63,26 @@ export default {
     },
     onSave: function (memoItem) {
       console.log('autoSave', memoItem)
-      this.$http.post('/api/memo', memoItem, { headers: { 'Content-Type': 'application/json' } })
-        .then((res) => {
-          console.log(res)
-          this.onLoad()
-        })
-        .catch((err) => {
-          console.error(err)
-        })
+      if (memoItem['_id']) {
+        this.$http.put('/api/memo', memoItem, { headers: { 'Content-Type': 'application/json' } })
+          .then((res) => {
+            console.log(res)
+            this.onLoad()
+          })
+          .catch((err) => {
+            console.error(err)
+          })
+      } else {
+        this.$http.post('/api/memo', memoItem, { headers: { 'Content-Type': 'application/json' } })
+          .then((res) => {
+            console.log(res)
+            this.memoItem['_id'] = res.data.results['_id']
+            // this.onLoad()
+          })
+          .catch((err) => {
+            console.error(err)
+          })
+      }
     },
     setLocation: function (memo) {
       // GPS를 지원한다면
