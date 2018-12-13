@@ -1,12 +1,18 @@
 <template>
   <b-list-group>
     <b-list-group-item v-for="item in list" :key="item._id" :variant="item.state" @click="selectedItem(item)" button>
-      <div class="d-flex w-100 justify-content-between">
-        <h6 class="mb-1">
-          <b-badge v-show="item.isAnswer">complete</b-badge> {{ item.title }}
-        </h6>
-        <small v-show="item.inputDt ? true : false">{{ diffDate(item.inputDt) }}</small>
-      </div>
+      <b-row>
+        <b-col class="text-left text-ellipsis" lg="8">
+          <h6 class="mb-1">
+            <b-badge v-show="item.isAnswer">complete</b-badge> {{ item.title }}
+          </h6>
+        </b-col>
+        <b-col class="text-right" lg="4">
+          <small v-show="item.inputDt ? true : false">{{ diffDate(item.inputDt) }}</small>
+        </b-col>
+      </b-row>
+      <!-- <div class="d-flex w-100 justify-content-between">
+      </div> -->
     </b-list-group-item>
   </b-list-group>
 </template>
@@ -80,3 +86,16 @@ export default {
   }
 }
 </script>
+<style>
+.text-left {
+  text-align: left;
+}
+.text-right {
+  text-align: right;
+}
+.text-ellipsis {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+</style>
