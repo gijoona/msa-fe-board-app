@@ -130,31 +130,6 @@ export default {
         console.log('GPS를 지원하지 않습니다.')
         this.memoItem.geoLoc = []
       }
-      // 모바일에서 위치정보 조회 시 문제가 발견되어 수정 중
-      // if (navigator.geolocation) {
-      //   navigator.geolocation.getCurrentPosition(
-      //     (position) => {
-      //       /* GPS 정보
-      //       position = {
-      //         coords: {}, // 좌표정보
-      //         timestamp: Number
-      //       }
-      //       */
-      //       this.memoItem.geoLoc = [position.coords.latitude, position.coords.longitude]
-      //     },
-      //     (err) => {
-      //       console.error(err)
-      //       this.memoItem.geoLoc = []
-      //     }, {
-      //       enableHighAccuracy: false,
-      //       maximumAge: 0,
-      //       timeout: Infinity
-      //     }
-      //   )
-      // } else {
-      //   console.log('GPS를 지원하지 않습니다.')
-      //   this.memoItem.geoLoc = []
-      // }
     }
   },
   components: {

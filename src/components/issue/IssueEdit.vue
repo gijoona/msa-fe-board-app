@@ -117,25 +117,23 @@ export default {
     },
     setLocation: function () {
       // GPS를 지원한다면
+      let opts = { enableHighAccuracy: true, maximumAge: 100, timeout: 60000 }
       if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
+        let watchID = navigator.geolocation.watchPosition(
+          (pos) => {
             /* GPS 정보
             position = {
               coords: {}, // 좌표정보
               timestamp: Number
             }
             */
-            this.issueData.geoLoc = [position.coords.latitude, position.coords.longitude]
+            this.issueData.geoLoc = [pos.coords.latitude, pos.coords.longitude]
           },
           (err) => {
             console.error(err)
-          }, {
-            enableHighAccuracy: false,
-            maximumAge: 0,
-            timeout: Infinity
-          }
-        )
+            this.issueData.geoLoc = []
+          }, opts)
+        let timeout = setTimeout(function () { navigator.geolocation.clearWatch(watchID); }, 5000)
       } else {
         console.log('GPS를 지원하지 않습니다.')
         this.issueData.geoLoc = []
