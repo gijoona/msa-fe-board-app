@@ -65,6 +65,7 @@ export default {
       })
       this.memoList.unshift(memo)
       this.memoItem = memo
+      this.setLocation()
     },
     deleteMemo: function () {
       this.$http.delete('/api/memo?id=' + encodeURIComponent(this.memoItem['_id']))
@@ -85,7 +86,6 @@ export default {
       this.memoItem = memoItem
     },
     onSave: function (memoItem) {
-      memoItem.geoLoc = this.setLocation()
       if (memoItem['_id']) {
         this.$http.put('/api/memo', memoItem, { headers: { 'Content-Type': 'application/json' } })
           .then((res) => {
@@ -118,11 +118,11 @@ export default {
               timestamp: Number
             }
             */
-            return [position.coords.latitude, position.coords.longitude]
+            this.memoItem.geoLoc = [position.coords.latitude, position.coords.longitude]
           },
           (err) => {
             console.error(err)
-            return []
+            this.memoItem.geoLoc = []
           }, {
             enableHighAccuracy: false,
             maximumAge: 0,
@@ -131,7 +131,7 @@ export default {
         )
       } else {
         console.log('GPS를 지원하지 않습니다.')
-        return []
+        this.memoItem.geoLoc = []
       }
     }
   },

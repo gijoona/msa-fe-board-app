@@ -17,7 +17,6 @@ export default {
   },
   methods: {
     onFocusout: function () {
-      console.log('blur')
       this.$emit('autosave', this.item)
     },
     resize: function (evt) {
