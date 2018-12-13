@@ -85,7 +85,7 @@ export default {
       this.memoItem = memoItem
     },
     onSave: function (memoItem) {
-      this.setLocation(memoItem)
+      memoItem.geoLoc = this.setLocation()
       if (memoItem['_id']) {
         this.$http.put('/api/memo', memoItem, { headers: { 'Content-Type': 'application/json' } })
           .then((res) => {
@@ -107,7 +107,7 @@ export default {
           })
       }
     },
-    setLocation: function (memo) {
+    setLocation: function () {
       // GPS를 지원한다면
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
@@ -118,10 +118,11 @@ export default {
               timestamp: Number
             }
             */
-            memo.geoLoc = [position.coords.latitude, position.coords.longitude]
+            return [position.coords.latitude, position.coords.longitude]
           },
           (err) => {
             console.error(err)
+            return []
           }, {
             enableHighAccuracy: false,
             maximumAge: 0,
@@ -130,7 +131,7 @@ export default {
         )
       } else {
         console.log('GPS를 지원하지 않습니다.')
-        this.memo.geoLoc = []
+        return []
       }
     }
   },
