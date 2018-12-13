@@ -109,30 +109,52 @@ export default {
     },
     setLocation: function () {
       // GPS를 지원한다면
+      let opts = { enableHighAccuracy: true, maximumAge: 100, timeout: 60000 }
       if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
+        let watchID = navigator.geolocation.watchPosition(
+          (pos) => {
             /* GPS 정보
             position = {
               coords: {}, // 좌표정보
               timestamp: Number
             }
             */
-            this.memoItem.geoLoc = [position.coords.latitude, position.coords.longitude]
+            this.memoItem.geoLoc = [pos.coords.latitude, pos.coords.longitude]
           },
           (err) => {
             console.error(err)
             this.memoItem.geoLoc = []
-          }, {
-            enableHighAccuracy: false,
-            maximumAge: 0,
-            timeout: Infinity
-          }
-        )
+          }, opts)
+        let timeout = setTimeout(function () { navigator.geolocation.clearWatch(watchID); }, 5000)
       } else {
         console.log('GPS를 지원하지 않습니다.')
         this.memoItem.geoLoc = []
       }
+      // 모바일에서 위치정보 조회 시 문제가 발견되어 수정 중
+      // if (navigator.geolocation) {
+      //   navigator.geolocation.getCurrentPosition(
+      //     (position) => {
+      //       /* GPS 정보
+      //       position = {
+      //         coords: {}, // 좌표정보
+      //         timestamp: Number
+      //       }
+      //       */
+      //       this.memoItem.geoLoc = [position.coords.latitude, position.coords.longitude]
+      //     },
+      //     (err) => {
+      //       console.error(err)
+      //       this.memoItem.geoLoc = []
+      //     }, {
+      //       enableHighAccuracy: false,
+      //       maximumAge: 0,
+      //       timeout: Infinity
+      //     }
+      //   )
+      // } else {
+      //   console.log('GPS를 지원하지 않습니다.')
+      //   this.memoItem.geoLoc = []
+      // }
     }
   },
   components: {
