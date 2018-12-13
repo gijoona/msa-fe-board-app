@@ -5,7 +5,7 @@
         <h6 class="mb-1">
           <b-badge v-show="item.isAnswer">complete</b-badge> {{ item.title }}
         </h6>
-        <small>{{ diffDate(item.inputDt) }}</small>
+        <small v-show="item.inputDt ? true : false">{{ diffDate(item.inputDt) }}</small>
       </div>
     </b-list-group-item>
   </b-list-group>

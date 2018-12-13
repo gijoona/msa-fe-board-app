@@ -9,7 +9,10 @@
       </b-row>
     </b-container>
     <div class="commandPanel">
-      <b-dropdown id="command-dropup" text="기능" variant="success" size="lg" class="m-2" dropup right>
+      <b-dropdown id="command-dropup" variant="link" size="lg" dropup right no-caret>
+        <template slot="button-content">
+          <font-awesome-icon icon="plus-circle" size="3x" />
+        </template >
         <b-dropdown-item :to="{name: 'IssueEdit'}" v-show="notEdit">새글</b-dropdown-item>
         <b-dropdown-item :to="{name: 'IssueList'}">목록</b-dropdown-item>
         <b-dropdown-item :to="{name: 'IssueEdit', params: {id: this.$route.params.id}}" v-show="isView">수정</b-dropdown-item>

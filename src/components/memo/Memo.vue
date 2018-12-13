@@ -4,15 +4,20 @@
     <b-container fluid class="p-0">
       <b-row>
         <b-col cols="3" class="p-0">
-          <b-card body-class="p-0">
-            <item-list :list="memoList" @view="onSelect"></item-list>
-            <div slot="footer" @click="newMemo">
-              새 메모
+          <b-card body-class="p-0" header-bg-variant="light" header-class="header-align p-0">
+            <div slot="header" class="btn">
+              <font-awesome-icon icon="edit" size="2x" @click="newMemo"/>
             </div>
+            <item-list :list="memoList" @view="onSelect"></item-list>
           </b-card>
         </b-col>
-        <b-col class="p-0">
-          <item-view :item="memoItem" @autosave="onSave"></item-view>
+        <b-col class="pl-2">
+          <b-card header-bg-variant="light" header-class="header-align p-0">
+            <div slot="header" class="btn">
+              <font-awesome-icon icon="trash-alt" size="2x" @click="deleteMemo"/>
+            </div>
+            <item-view :item="memoItem" @autosave="onSave"></item-view>
+          </b-card>
         </b-col>
       </b-row>
     </b-container>
@@ -54,22 +59,37 @@ export default {
     },
     newMemo: function () {
       let memo = Object.assign({}, {
-        title: '',
+        title: '새 메모',
         contents: '',
         geoLoc: []
       })
-      this.setLocation(memo)
       this.memoList.unshift(memo)
+      this.memoItem = memo
+    },
+    deleteMemo: function () {
+      this.$http.delete('/api/memo?id=' + encodeURIComponent(this.memoItem['_id']))
+        .then((res) => {
+          this.onLoad((list) => {
+            if (list.length > 0) {
+              this.memoItem = list[0]
+            } else {
+              this.memoItem = {}
+            }
+          })
+        })
+        .catch((err) => {
+          console.error(err)
+        })
     },
     onSelect: function (memoItem) {
       this.memoItem = memoItem
     },
     onSave: function (memoItem) {
-      console.log('autoSave', memoItem)
+      this.setLocation(memoItem)
       if (memoItem['_id']) {
         this.$http.put('/api/memo', memoItem, { headers: { 'Content-Type': 'application/json' } })
           .then((res) => {
-            console.log(res)
+            this.memoItem['inputDt'] = res.data.results['inputDt']
             this.onLoad()
           })
           .catch((err) => {
@@ -78,9 +98,9 @@ export default {
       } else {
         this.$http.post('/api/memo', memoItem, { headers: { 'Content-Type': 'application/json' } })
           .then((res) => {
-            console.log(res)
             this.memoItem['_id'] = res.data.results['_id']
-            // this.onLoad()
+            this.memoItem['inputDt'] = res.data.results['inputDt']
+            this.onLoad()
           })
           .catch((err) => {
             console.error(err)
@@ -121,11 +141,17 @@ export default {
   },
   created: function () {
     this.onLoad((list) => {
-      console.log(list)
       if (list.length > 0) {
         this.memoItem = list[0]
+      } else {
+        this.memoItem = {}
       }
     })
   }
 }
 </script>
+<style>
+.header-align {
+  text-align: right;
+}
+</style>

@@ -1,8 +1,9 @@
 <template>
-  <b-form>
-    <b-form-input class="no-board" size="lg" @blur.native="onFocusout" v-model="item.title"></b-form-input>
-    <hr />
-    <b-form-textarea class="no-board full-height" @blur.native="onFocusout" v-model="item.contents"></b-form-textarea>
+  <b-form class="memo-align">
+    <input type="text" class="no-board memo-title" @blur="onFocusout" v-model="item.title" />
+    <small class="memo-date" v-show="item.inputDt ? true : false">{{ adressAndDate }}</small>
+    <hr class="m-0 separate-line"/>
+    <textarea class="no-board memo-contents" @blur="onFocusout" v-model="item.contents" @keydown="resize" @keyup="resize"></textarea>
   </b-form>
 </template>
 <script>
@@ -17,15 +18,43 @@ export default {
   methods: {
     onFocusout: function () {
       this.$emit('autosave', this.item)
+    },
+    resize: function (evt) {
+      let obj = evt.target
+      obj.style.height = '1px'
+      obj.style.height = (12 + obj.scrollHeight) + 'px'
+    }
+  },
+  computed: {
+    adressAndDate: function () {
+      return this.item.geoLocation.adress + ' - ' + this.item.inputDt
     }
   }
 }
 </script>
 <style>
-.full-height {
-  height: 100%;
+.memo-title {
+  width: 100%;
+  height: 50px;
+  font-weight: bold;
+  font-size: 20pt;
+}
+.memo-date {
+  color: #a7a7a7;
+}
+.separate-line {
+  width: 100%;
+}
+.memo-contents {
+  width: 100%;
+  min-height: 500px;
+  overflow-y: hidden;
+}
+.memo-align {
+  text-align: left;
 }
 .no-board {
   border: 0px;
+  outline: none;
 }
 </style>

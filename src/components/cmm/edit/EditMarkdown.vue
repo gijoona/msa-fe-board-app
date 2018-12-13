@@ -3,10 +3,10 @@
     <b-row>
       <b-col :cols="editCols">
         <b-form-textarea :id="'tar'+currId" v-model="content" rows="5" max-rows="10" @input="onInput"></b-form-textarea>
-        <b-btn class="preview-btn p-1" @click="showCollapse = !showCollapse"
+        <b-btn class="preview-btn px-2 py-0" variant="link" @click="showCollapse = !showCollapse"
           :aria-controls="'collapse'+currId"
           :aria-expanded="showCollapse ? 'true' : 'false'">
-          view
+          <font-awesome-icon icon="eye" size="2x" />
         </b-btn>
       </b-col>
       <b-col :cols="preCols">
@@ -81,7 +81,7 @@ export default {
 .preview-btn {
   position: relative;
   float: right;
-  top: -45px;
+  top: -40px;
   right: 10px;
   z-index: 10;
   opacity: 0.5;

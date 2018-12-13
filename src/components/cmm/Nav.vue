@@ -18,7 +18,9 @@
           <b-input-group>
             <b-form-input size="sm" type="text" v-model="searchTxt" placeholder="제목 + 내용 검색"/>
             <b-input-group-append>
-              <b-button size="sm" type="submit">검색</b-button>
+              <b-button size="sm" type="submit">
+                <font-awesome-icon icon="search" />
+              </b-button>
             </b-input-group-append>
           </b-input-group>
         </b-nav-form>
