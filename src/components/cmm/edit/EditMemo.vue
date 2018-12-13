@@ -27,7 +27,11 @@ export default {
   },
   computed: {
     adressAndDate: function () {
-      return this.item.geoLocation.adress + ' - ' + this.item.inputDt
+      let adress = '알수없음'
+      if (this.item.geoLocation && this.item.geoLocation.adress) {
+        adress = this.item.geoLocation.adress
+      }
+      return adress + ' - ' + this.item.inputDt
     }
   }
 }
