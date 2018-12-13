@@ -125,7 +125,7 @@ export default {
             console.error(err)
             this.memoItem.geoLoc = []
           }, opts)
-        let timeout = setTimeout(function () { navigator.geolocation.clearWatch(watchID); }, 5000)
+        setTimeout(function () { navigator.geolocation.clearWatch(watchID) }, 5000)
       } else {
         console.log('GPS를 지원하지 않습니다.')
         this.memoItem.geoLoc = []
