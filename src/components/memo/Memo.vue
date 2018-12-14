@@ -55,7 +55,18 @@ export default {
         })
     },
     onSearch: function (val) {
-      console.log(val)
+      this.$http.get('/api/memo?search=' + encodeURIComponent(val))
+        .then((res) => {
+          this.memoList = res.data.results
+          if (this.memoList.length > 0) {
+            this.memoItem = this.memoList[0]
+          } else {
+            this.memoItem = {}
+          }
+        })
+        .catch((err) => {
+          console.error(err)
+        })
     },
     newMemo: function () {
       let memo = Object.assign({}, {
