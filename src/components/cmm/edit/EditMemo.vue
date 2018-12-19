@@ -1,9 +1,11 @@
 <template>
   <b-form class="memo-align">
-    <input type="text" class="no-board memo-title" @blur="onFocusout" v-model="item.title" />
-    <small class="memo-date" v-show="item.inputDt ? true : false">{{ adressAndDate }}</small>
+    <input type="text" class="no-board memo-title" @blur="onFocusout" v-model="title" />
+    <small class="memo-date" v-show="inputDt ? true : false">{{ adressAndDate }}</small>
     <hr class="m-0 separate-line"/>
-    <textarea class="no-board memo-contents" @blur="onFocusout" v-model="item.contents" @keydown="resize" @keyup="resize"></textarea>
+    <pre>
+      <p class="no-board" contenteditable="true" @blur="onFocusout" @input="update">{{ contents }}</p>
+    </pre>
   </b-form>
 </template>
 <script>
@@ -12,17 +14,27 @@ export default {
   props: ['item'],
   data: function () {
     return {
-      msg: 'edit memo'
+      msg: 'edit memo',
+      title: '',
+      inputDt: null,
+      contents: ''
+    }
+  },
+  watch: {
+    'item': function (obj) {
+      this.title = obj.title
+      this.inputDt = obj.inputDt
+      this.contents = obj.contents
     }
   },
   methods: {
     onFocusout: function () {
+      this.item.title = this.title
+      // this.item.contents = this.contents
       this.$emit('autosave', this.item)
     },
-    resize: function (evt) {
-      let obj = evt.target
-      obj.style.height = '1px'
-      obj.style.height = (12 + obj.scrollHeight) + 'px'
+    update: function (event) {
+      this.item.contents = event.target.innerText
     }
   },
   computed: {
@@ -31,7 +43,7 @@ export default {
       if (this.item.geoLocation && this.item.geoLocation.adress) {
         adress = this.item.geoLocation.adress
       }
-      return adress + ' - ' + this.item.inputDt
+      return adress + ' - ' + this.inputDt
     }
   }
 }
@@ -52,6 +64,7 @@ export default {
 .memo-contents {
   width: 100%;
   min-height: 500px;
+  height: 100%;
   overflow-y: hidden;
 }
 .memo-align {
