@@ -3,9 +3,7 @@
     <input type="text" class="no-board memo-title" @blur="onFocusout" v-model="title" />
     <small class="memo-date" v-show="inputDt ? true : false">{{ adressAndDate }}</small>
     <hr class="m-0 separate-line"/>
-    <pre>
-      <p class="no-board" contenteditable="true" @blur="onFocusout" @input="update">{{ contents }}</p>
-    </pre>
+    <p class="no-board pre-text" contenteditable="true" @blur="onFocusout" @input="update">{{ contents }}</p>
   </b-form>
 </template>
 <script>
@@ -73,5 +71,8 @@ export default {
 .no-board {
   border: 0px;
   outline: none;
+}
+.pre-text {
+  white-space: pre-wrap;
 }
 </style>
