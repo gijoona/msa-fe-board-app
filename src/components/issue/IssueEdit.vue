@@ -4,8 +4,8 @@
       <b-form-group id="titleGroup" horizontal label="Title" label-for="txtTitle">
         <b-form-input id="txtTitle" v-model="issueData.title" placeholder="Enter Issue Title" v-focus></b-form-input>
       </b-form-group>
-      <edit-markdown currId="content" label="Contents" :data="issueData.contents" @update:data="val => issueData.contents = val"></edit-markdown>
-      <edit-markdown currId="solution" label="Solutions" :data="issueData.solutions" @update:data="val => issueData.solutions = val"></edit-markdown>
+      <edit-markdown currId="content" label="Contents" :editText="issueData.contents" @update:data="val => issueData.contents = val"></edit-markdown>
+      <edit-markdown currId="solution" label="Solutions" :editText="issueData.solutions" @update:data="val => issueData.solutions = val"></edit-markdown>
       <b-form-group id="tagsGroup" horizontal label="Tags" label-for="txtTags">
         <b-form-input id="txtTags" v-model="issueData.tags" placeholder="ex) #tag1 #tag2 ..."></b-form-input>
       </b-form-group>

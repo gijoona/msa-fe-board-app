@@ -22,7 +22,7 @@ import VueMarkdown from 'vue-markdown'
 
 export default {
   name: 'EditMarkdown',
-  props: ['currId', 'label', 'data'],
+  props: ['currId', 'label', 'editText'],
   data: function () {
     return {
       content: '',
@@ -59,8 +59,13 @@ export default {
   components: {
     VueMarkdown
   },
-  mounted: function () {
-    this.content = this.data
+  watch: {
+    editText: function (val) {
+      if (this.content === '') {
+        this.content = val
+        this.markdownText = val
+      }
+    }
   }
 }
 </script>
