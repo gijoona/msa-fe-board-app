@@ -79,6 +79,7 @@ export default {
   text-align: left;
   height: 100%;
   max-height: 254px;
+  white-space: pre-wrap;
 }
 .preview {
   padding: 2px 10px;
