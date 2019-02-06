@@ -126,7 +126,7 @@ export default {
           (pos) => {
             /* GPS 정보
             position = {
-              coords: {}, // 좌표정보
+              coords: {}, // 좌표정보 
               timestamp: Number
             }
             */
